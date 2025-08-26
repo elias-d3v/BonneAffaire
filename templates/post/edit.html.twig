@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Modifier l’annonce</h1>
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.itemCondition) }}
+        {{ form_row(form.location) }}
+        {{ form_row(form.postalCode) }}
+        {{ form_row(form.category) }}
+
+        {% if post.image1 %}
+            <img src="{{ asset('uploads/' ~ post.image1) }}" alt="Image 1" width="100">
+        {% endif %}
+        {{ form_row(form.image1) }}
+
+        {% if post.image2 %}
+            <img src="{{ asset('uploads/' ~ post.image2) }}" alt="Image 2" width="100">
+        {% endif %}
+        {{ form_row(form.image2) }}
+
+        {% if post.image3 %}
+            <img src="{{ asset('uploads/' ~ post.image3) }}" alt="Image 3" width="100">
+        {% endif %}
+        {{ form_row(form.image3) }}
+
+        <button type="submit">Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}
