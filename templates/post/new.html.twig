@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h1>Créer une nouvelle annonce</h1>
+
+  {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+    <div>
+      {{ form_label(form.title, 'Titre') }}
+      {{ form_widget(form.title) }}
+      {{ form_errors(form.title) }}
+    </div>
+
+    <div>
+      {{ form_label(form.description, 'Description') }}
+      {{ form_widget(form.description) }}
+      {{ form_errors(form.description) }}
+    </div>
+
+    <div>
+      {{ form_label(form.price, 'Prix') }}
+      {{ form_widget(form.price) }}
+      {{ form_errors(form.price) }}
+    </div>
+
+    <div>
+      {{ form_label(form.itemCondition, 'État') }}
+      {{ form_widget(form.itemCondition) }}
+      {{ form_errors(form.itemCondition) }}
+    </div>
+
+    <div>
+      {{ form_label(form.location, 'Lieu') }}
+      {{ form_widget(form.location) }}
+      {{ form_errors(form.location) }}
+    </div>
+
+    <div>
+      {{ form_label(form.postalCode, 'Code Postal') }}
+      {{ form_widget(form.postalCode) }}
+      {{ form_errors(form.postalCode) }}
+    </div>
+    
+    <div>
+      {{ form_label(form.category, 'Catégorie') }}
+      {{ form_widget(form.category) }}
+      {{ form_errors(form.category) }}
+    </div>
+
+    <div>
+      {{ form_label(form.image1, 'Image 1') }}
+      {{ form_widget(form.image1) }}
+    </div>
+
+    <div>
+      {{ form_label(form.image2, 'Image 2') }}
+      {{ form_widget(form.image2) }}
+    </div>
+
+    <div>
+      {{ form_label(form.image3, 'Image 3') }}
+      {{ form_widget(form.image3) }}
+    </div>
+
+    <button type="submit">Publier l’annonce</button>
+  
+  {{ form_end(form) }}
+{% endblock %}
