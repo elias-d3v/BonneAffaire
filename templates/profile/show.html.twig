@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profil de {{ user.name }}</h1>
+    <p>Email : {{ user.email }}</p>
+    <p>Téléphone : {{ user.phone }}</p>
+    <p>Date d’inscription : {{ user.registrationDate|date('d/m/Y H:i') }}</p>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.id == user.id %}
+        <a href="{{ path('app_profile_show', {id: user.id}) }}">Modifier mon profil</a>
+    {% endif %}
+{% endblock %}
