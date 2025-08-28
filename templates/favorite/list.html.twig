@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>⭐ Mes Favoris</h1>
+
+<div class="row">
+    {% for fav in favorites %}
+        <div class="col-md-4">
+            <div class="card mb-3">
+                {% if fav.post.image1 %}
+                    <img src="{{ asset('uploads/' ~ fav.post.image1) }}" class="card-img-top" alt="">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ fav.post.title }}</h5>
+                    <p>{{ fav.post.price }} €</p>
+                    <a href="{{ path('post_show', {id: fav.post.id}) }}" class="btn btn-primary">Voir l'annonce</a>
+                    <a href="{{ path('favorites_remove', {id: fav.post.id}) }}" class="btn btn-danger">Retirer</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>Aucun favori pour l’instant.</p>
+    {% endfor %}
+</div>
+{% endblock %}
