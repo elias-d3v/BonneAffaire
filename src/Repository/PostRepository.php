@@ -16,28 +16,57 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    //    /**
-    //     * @return Post[] Returns an array of Post objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findAllSorted(string $sort = 'date', ?int $categoryId = null, ?string $postalCode = null)
+    {
+        $qb = $this->createQueryBuilder('p');
 
-    //    public function findOneBySomeField($value): ?Post
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        // Tri
+        if ($sort === 'prix') {
+            $qb->orderBy('p.price', 'ASC');
+        } else {
+            $qb->orderBy('p.publishedAt', 'DESC');
+        }
+
+        // Filtre catégorie
+        if ($categoryId) {
+            $qb->andWhere('p.category = :cat')
+            ->setParameter('cat', $categoryId);
+        }
+
+        // Filtre département (2 premiers chiffres du code postal)
+        if ($postalCode) {
+            $qb->andWhere('p.postalCode LIKE :dept')
+            ->setParameter('dept', $postalCode.'%');
+        }
+
+        // Status validé
+        $qb->andWhere('p.status = :status')
+        ->setParameter('status', 'validated');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByCategory($categoryId)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.category = :cat')
+            ->setParameter('cat', $categoryId)
+            ->orderBy('p.publishedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function search(string $term): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->andWhere('p.title LIKE :term')
+        ->setParameter('term', '%' . $term . '%')
+        ->orderBy('p.publishedAt', 'DESC');
+
+        $qb->andWhere('p.status = :status')
+           ->setParameter('status', 'validated');
+
+        return $qb->getQuery()->getResult();
+    }
 }
