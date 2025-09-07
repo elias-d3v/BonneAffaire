@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Post>
      */
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', cascade: ["remove"], orphanRemoval: true)]
     private Collection $posts;
 
     /**
@@ -74,8 +74,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Message>
      */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender')]
-    private Collection $messages;
+    #[ORM\OneToMany(mappedBy: "sender", targetEntity: Message::class, cascade: ["remove"], orphanRemoval: true)]
+    private Collection $sentMessages;
+    
+    /**
+     * @var Collection<int, Message>
+     */
+    #[ORM\OneToMany(mappedBy: "receiver", targetEntity: Message::class, cascade: ["remove"], orphanRemoval: true)]
+    private Collection $receivedMessages;
 
     public function __construct()
     {

@@ -1,0 +1,19 @@
+<nav class="bottom-nav">
+    <a href="{{ path('post_new') }}" class="nav-item">
+        <img src="{{ asset('images/add-circle-svgrepo-com.svg') }}" alt="Vendre">
+        <span>Vendre</span>
+    </a>
+    <a href="{{ path('favorites_list') }}" class="nav-item">
+        <img src="{{ asset('images/heart-alt-svgrepo-com.svg') }}" alt="Favoris">
+        <span>Favoris</span>
+    </a>
+    <a href="{{ path('messages_inbox') }}" class="nav-item">
+        <img src="{{ asset('images/chat-round-line-svgrepo-com.svg') }}" alt="Messages">
+        <span>Messages</span>
+        <span class="badge">3</span>
+    </a>
+    <a href="{{ path('app_profile_show', { id: app.user.id }) }}" class="nav-item">
+        <img src="{{ asset('images/user-alt-1-svgrepo-com.svg') }}" alt="Compte">
+        <span>Mon compte</span>
+    </a>
+</nav>

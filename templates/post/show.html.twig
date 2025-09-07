@@ -5,7 +5,11 @@
 <a href="{{ path('report_post', {id: post.id}) }}" class="btn btn-danger">
     🚩 Signaler cette annonce
 </a>
-
+{% if app.user and app.user != post.user %}
+    <a href="{{ path('message_contact', {id: post.id}) }}" class="btn btn-primary">
+        ✉️ Envoyer un message
+    </a>
+{% endif %}
 <h1>{{ post.title }}</h1>
 
 <p>{{ post.description }}</p>

@@ -1,0 +1,54 @@
+.menu-wrapper {
+  position: relative;
+  overflow: hidden;     // masque ce qui dépasse
+  width: 80%;
+  max-width: 100%;      // ne déborde pas de l’écran
+  margin: 1rem auto;
+}
+
+.menu {
+  position: relative;
+  display: flex;
+  gap: 1rem; // espace entre les items
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  left: 0;
+  transition: left 0.3s ease;
+}
+
+.menu .item {
+  font-size: 2rem;
+  flex: 0 0 auto;
+  min-width: 200px;
+  text-align: center;
+  padding: .5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #007bff;
+  color: white;
+  padding: .5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  user-select: none;
+}
+
+.left-arrow {
+  left: 0;
+}
+
+.right-arrow {
+  right: 0;
+}
+
+.hidden {
+  display: none !important;
+}

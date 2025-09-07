@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - BonneAffaire{% endblock %}
+
+{% block body %}
+  <!-- Bloc promo -->
+  <section class="promo">
+    <p>C’est le moment de vendre !</p>
+    <a href="{{ path('post_new') }}" class="btn">Publier une annonce</a>
+  </section>
+
+  <!-- Recherches récentes -->
+  <section class="recent-searches">
+    <h2 class="title">Recherches récentes</h2>
+    <div class="recent-grid">
+      <div class="search-card">
+        <button class="remove">&times;</button>
+        <h3>Scooter</h3>
+        <p>Toutes catégories</p>
+        <span class="location">Toute la France</span>
+      </div>
+      
+      <div class="search-card">
+        <button class="remove">&times;</button>
+        <h3>Maison</h3>
+        <p>Immobilier</p>
+        <span class="location">Paris (75)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suggestions -->
+  <section class="suggestions">
+    <h2 class="title">Vous pouvez aimer</h2>
+
+    <div class="grid">
+      {% for post in posts %}
+        <article class="card">
+          <img src="{{ post.image }}" alt="{{ post.title }}">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.price }} €</p>
+          <span>{{ post.location }}</span>
+        </article>
+      {% endfor %}
+
+      <div class="see-more">
+        <a href="{{ path('post_list') }}" class="btn">Voir plus</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nouveautés -->
+  <section class="news">
+    <h2 class="title">Nouveautés</h2>
+    <div class="grid">
+      {% for post in posts %}
+        <article class="card">
+          <img src="{{ post.image }}" alt="{{ post.title }}">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.price }} €</p>
+          <span>{{ post.location }}</span>
+        </article>
+      {% endfor %}
+
+      <div class="see-more">
+        <a href="{{ path('post_list') }}" class="btn">Voir plus</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

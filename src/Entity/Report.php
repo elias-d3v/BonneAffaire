@@ -20,6 +20,7 @@ class Report
     private ?User $reporter = null;
 
     #[ORM\ManyToOne(inversedBy: 'reports')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Post $post = null;
 
     #[ORM\Column]

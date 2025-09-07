@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h2>Conversation avec {{ otherUser.name }}</h2>
+
+<div id="conversation">
+    {% include 'messages/_conversation.html.twig' %}
+</div>
+
+<form method="post" action="{{ path('messages_send', {id: otherUser.id}) }}">
+    <textarea name="content" required></textarea>
+    <button type="submit">Envoyer</button>
+</form>
+
+<script>
+    // refresh auto toutes les 5 secondes
+    setInterval(() => {
+        fetch("{{ path('messages_fetch', {id: otherUser.id}) }}")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector('#conversation').innerHTML = html;
+            });
+    }, 5000);
+</script>
+{% endblock %}

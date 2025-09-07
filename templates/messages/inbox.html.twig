@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h2>📩 Boîte de réception</h2>
+
+<ul>
+    {% for conv in conversations %}
+        <li>
+            <strong>{{ conv.user.name }}</strong> : 
+            {{ conv.lastMessage.content|slice(0, 50) ~ '...' }}
+            <br>
+            <small>{{ conv.lastMessage.sentAt|date('d/m/Y H:i') }}</small>
+            <br>
+            <a href="{{ path('messages_conversation', {id: conv.user.id}) }}">
+                Ouvrir la conversation →
+            </a>
+        </li>
+    {% else %}
+        <li>Aucune conversation pour l’instant.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
