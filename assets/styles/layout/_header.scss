@@ -1,0 +1,83 @@
+@use "../base/variables" as *;
+
+.main-header {
+  background: $primary;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+
+  .logo img {
+    height: 200px;
+    margin-bottom: .5rem;
+  }
+
+  .search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    input {
+      flex: 1;
+      font-size: 1.5rem;
+      max-width: 50%;
+      padding: 1rem;
+      border-radius: $radius-lg 0 0 $radius-lg;
+      border-right: none;
+      border-top: 4px solid $dark-grey;
+      border-left: 4px solid $dark-grey;
+      border-bottom: 4px solid $dark-grey;
+    }
+
+    button {
+      position: relative;
+      background: white;
+      padding: 0 2.5rem;
+      border-radius: 0 $radius-lg $radius-lg 0;
+      border-left: 2px solid $primary;
+      border-top: 4px solid $dark-grey;
+      border-right: 4px solid $dark-grey;
+      border-bottom: 4px solid $dark-grey;
+      cursor: pointer;
+
+        &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2rem;
+        height: 2rem;
+        background: url('/images/search-svgrepo-com.svg') no-repeat center center;
+        background-size: contain;
+      }
+    }
+  }
+
+  .categories {
+    display: flex;
+    align-items: center;
+
+    ul {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .scroll-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+    }
+  }
+}

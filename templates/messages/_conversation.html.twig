@@ -1,0 +1,10 @@
+<div class="messages">
+    {% for m in messages %}
+        <div class="message {% if m.sender == app.user %}sent{% else %}received{% endif %}">
+            <p>{{ m.content }}</p>
+            <small>{{ m.sentAt|date('H:i d/m/Y') }}</small>
+        </div>
+    {% else %}
+        <p>Aucun message pour l'instant.</p>
+    {% endfor %}
+</div>

@@ -1,0 +1,55 @@
+.bottom-nav {
+  position: fixed; 
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #007bff;
+  border-radius: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 85%;
+  height: 95px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  color: white;
+  z-index: 9999;
+
+  .nav-item {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    color: white;
+    text-decoration: none;    
+
+    img {
+    display: block;
+    margin: 0 auto 0.3rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    }
+
+    span {
+      font-size: 1.6rem;
+      display: block;
+    }
+
+    .badge {
+    position: absolute;
+    top: 32px;
+    right: 70px;
+    background: #ff4d4d;
+    color: white;
+    font-size: 1.3rem;
+    padding: 0.3rem 0.4rem;
+    border-radius: 50%;
+    }
+  }
+}
+
+// Cacher navbar du bas pour desktop
+@media (min-width: 768px) {
+  .bottom-nav {
+    display: none;
+  }
+}

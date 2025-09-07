@@ -54,7 +54,7 @@ class Post
     private ?string $postalCode = null;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private string $status = 'pending';
+    private ?string $status = 'pending';
 
     /**
      * @var Collection<int, Favorite>
@@ -277,6 +277,17 @@ class Post
             }
         }
 
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
         return $this;
     }
 }
