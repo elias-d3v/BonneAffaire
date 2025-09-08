@@ -49,7 +49,7 @@
     {% endif %}
 
     {% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
-    <a href="{{ path('post_edit', {id: post.id}) }}">Modifier l’annonce</a>
+      <a href="{{ path('post_edit', {id: post.id}) }}">Modifier l’annonce</a>
     {% endif %}
 
     <a href="{{ path('favorites_add', {id: post.id}) }}" class="btn btn-warning">⭐ Ajouter aux favoris</a>

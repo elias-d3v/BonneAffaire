@@ -13,8 +13,9 @@
         {{ form_row(form.postalCode) }}
         {{ form_row(form.category) }}
 
+
         {% if post.image1 %}
-            <img src="{{ asset('uploads/' ~ post.image1) }}" alt="Image 1" width="100">
+            <img src="{{ asset('uploads/' ~ post.image1) }}" alt="Image actuelle" style="max-width:150px">
         {% endif %}
         {{ form_row(form.image1) }}
 

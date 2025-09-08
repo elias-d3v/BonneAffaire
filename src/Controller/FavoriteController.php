@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/favorites')]
 class FavoriteController extends AbstractController
@@ -23,45 +24,30 @@ class FavoriteController extends AbstractController
         ]);
     }
 
-    #[Route('/add/{id}', name: 'favorites_add')]
-    public function add(Post $post, EntityManagerInterface $em, FavoriteRepository $repo): Response
+    #[Route('/favorites/toggle/{id}', name: 'favorites_toggle', methods: ['POST'])]
+    public function toggle(Post $post, EntityManagerInterface $em, FavoriteRepository $repo): JsonResponse
     {
         $user = $this->getUser();
 
         if (!$user) {
-            // redirection vers la page login si pas connecté
-            return $this->redirectToRoute('app_login');
+            return new JsonResponse(['status' => 'unauthorized'], 401);
         }
 
-        // vérifier si déjà en favoris
         $existing = $repo->findOneBy(['user' => $user, 'post' => $post]);
-        if (!$existing) {
+
+        if ($existing) {
+            $em->remove($existing);
+            $em->flush();
+            $em->refresh($user);
+            return new JsonResponse(['status' => 'removed']);
+        } else {
             $favorite = new Favorite();
             $favorite->setUser($user);
             $favorite->setPost($post);
             $em->persist($favorite);
             $em->flush();
-    }
-
-    return $this->redirectToRoute('favorites_list');
-    }
-
-    #[Route('/remove/{id}', name: 'favorites_remove')]
-    public function remove(Post $post, EntityManagerInterface $em, FavoriteRepository $repo): Response
-    {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
+            $em->refresh($user);
+            return new JsonResponse(['status' => 'added']);
         }
-
-        $favorite = $repo->findOneBy(['user' => $user, 'post' => $post]);
-
-        if ($favorite) {
-            $em->remove($favorite);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('favorites_list');
     }
 }
