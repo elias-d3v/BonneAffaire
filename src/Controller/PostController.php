@@ -81,11 +81,11 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'post_edit')]
+    #[Route('/{id}/edit', name: 'post_edit', methods: ['GET', 'POST'])]
     public function edit(Post $post, Request $request, EntityManagerInterface $em): Response
     {
         AccessChecker::checkAccess($this->getUser(), 'OWNER_OR_ADMIN', $post);
-
+        
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -115,7 +115,7 @@ class PostController extends AbstractController
         }
 
         return $this->render('post/edit.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
             'post' => $post,
         ]);
     }
