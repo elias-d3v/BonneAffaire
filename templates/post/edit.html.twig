@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Modifier l’annonce</h1>
+    <section class="page-banner">
+        <h1>Modifier l’annonce</h1>
+    </section>
 
     {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
@@ -31,4 +33,16 @@
 
         <button type="submit">Enregistrer</button>
     {{ form_end(form) }}
+
+    {# Script pour remplacé la virgule (des centimes) par un point avant l'envoie #}
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const priceInput = document.querySelector('input[name="post[price]"]');
+        if (priceInput) {
+            priceInput.addEventListener("input", function() {
+                this.value = this.value.replace(',', '.');
+            });
+        }
+    });
+    </script>
 {% endblock %}

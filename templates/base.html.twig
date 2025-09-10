@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcomsse!{% endblock %}</title>
@@ -28,9 +28,7 @@
         {# Bottom navbar uniquement en mobile #}
         {% include 'partials/_bottom-nav.html.twig' %}
 
-        <footer>
-            <p>&copy; {{ "now"|date("Y") }} BonneAffaire - Mentions légales</p>
-        </footer>
+        {% include 'partials/_footer.html.twig' %}
 
     </body>
 </html>

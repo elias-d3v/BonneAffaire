@@ -16,7 +16,8 @@ class Favorite
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'favorites')]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'favorites')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Post $post = null;
 
     public function getId(): ?int

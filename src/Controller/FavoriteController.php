@@ -19,8 +19,16 @@ class FavoriteController extends AbstractController
     {
         $favorites = $repo->findBy(['user' => $this->getUser()]);
 
+        $favorisIds = [];
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getFavorites() as $favori) {
+                $favorisIds[] = $favori->getPost()->getId();
+            }
+        }
+
         return $this->render('favorite/list.html.twig', [
             'favorites' => $favorites,
+            'favorisIds' => $favorisIds,
         ]);
     }
 

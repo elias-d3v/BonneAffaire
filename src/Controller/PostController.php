@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use App\Repository\CategoryRepository;
 
 #[Route('/post')]
@@ -53,16 +54,27 @@ class PostController extends AbstractController
     }
 
     #[Route('/list', name: 'post_list')]
-    public function list(PostRepository $repo, Request $request, CategoryRepository $catRepo): Response
+    public function list(PostRepository $repo, Request $request, CategoryRepository $catRepo, ParameterBagInterface $params): Response
     {
         $sort = $request->query->get('sort', 'date');
-        $categoryId = $request->query->get('category');
-        $categoryId = $categoryId ? (int) $categoryId : null;
+        $categoryId = $request->query->get('category') ? (int) $request->query->get('category') : null;
+        $dept = $request->query->get('dept') ?: null;
+        $q = $request->query->get('q');
 
-        $dept = $request->query->get('dept');
+        $posts = $repo->findAllSorted($sort, $categoryId, $dept, $q);
 
-        $posts = $repo->findAllSorted($sort, $categoryId, $dept);
         $categories = $catRepo->findAll();
+
+        // Favoris
+        $favorisIds = [];
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getFavorites() as $favori) {
+                $favorisIds[] = $favori->getPost()->getId();
+            }
+        }
+
+        // Département (pour le filtre)
+        $departments = $params->get('departements');
 
         return $this->render('post/list.html.twig', [
             'posts' => $posts,
@@ -70,6 +82,9 @@ class PostController extends AbstractController
             'categories' => $categories,
             'selectedCategory' => $categoryId,
             'selectedDept' => $dept,
+            'favorisIds' => $favorisIds,
+            'departments' => $departments,
+            'q' => $q,
         ]);
     }
 
@@ -126,18 +141,6 @@ class PostController extends AbstractController
         $posts = $repo->findByCategory($id);
         return $this->render('post/list.html.twig', [
             'posts' => $posts,
-        ]);
-    }
-
-    #[Route('/search', name: 'post_search')]
-    public function search(Request $request, PostRepository $repo): Response
-    {
-        $term = $request->query->get('q', '');
-        $posts = $term ? $repo->search($term) : [];
-
-        return $this->render('post/search.html.twig', [
-            'posts' => $posts,
-            'term' => $term,
         ]);
     }
 }

@@ -1,68 +1,86 @@
 {% extends 'base.html.twig' %}
 
+
+
 {% block body %}
-  <h1>Créer une nouvelle annonce</h1>
+  <section class="page-banner">
+    <h1>Créer une nouvelle annonce</h1>
+  </section>
 
-  {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+  <div class="form-container">
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'class': 'custom-form'}}) }}
 
-    <div>
-      {{ form_label(form.title, 'Titre') }}
-      {{ form_widget(form.title) }}
-      {{ form_errors(form.title) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.title, 'Titre', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.title, {'attr': {'class': 'form-error'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.description, 'Description') }}
-      {{ form_widget(form.description) }}
-      {{ form_errors(form.description) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control textarea'}}) }}
+        {{ form_errors(form.description, {'attr': {'class': 'form-error'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.price, 'Prix') }}
-      {{ form_widget(form.price) }}
-      {{ form_errors(form.price) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.price, 'Prix', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.price, {'attr': {'class': 'form-error'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.itemCondition, 'État') }}
-      {{ form_widget(form.itemCondition) }}
-      {{ form_errors(form.itemCondition) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.itemCondition, 'État', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.itemCondition, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.itemCondition, {'attr': {'class': 'form-error'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.location, 'Lieu') }}
-      {{ form_widget(form.location) }}
-      {{ form_errors(form.location) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.location, 'Lieu', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.location, {'attr': {'class': 'form-error'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.postalCode, 'Code Postal') }}
-      {{ form_widget(form.postalCode) }}
-      {{ form_errors(form.postalCode) }}
-    </div>
-    
-    <div>
-      {{ form_label(form.category, 'Catégorie') }}
-      {{ form_widget(form.category) }}
-      {{ form_errors(form.category) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.postalCode, 'Département', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.postalCode, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.postalCode, {'attr': {'class': 'form-error'}}) }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_label(form.category, 'Catégorie', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.category, {'attr': {'class': 'form-error'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.image1, 'Image 1') }}
-      {{ form_widget(form.image1) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.image1, 'Image 1', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.image1, {'attr': {'class': 'form-control-file'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.image2, 'Image 2') }}
-      {{ form_widget(form.image2) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.image2, 'Image 2', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.image2, {'attr': {'class': 'form-control-file'}}) }}
+      </div>
 
-    <div>
-      {{ form_label(form.image3, 'Image 3') }}
-      {{ form_widget(form.image3) }}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.image3, 'Image 3', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.image3, {'attr': {'class': 'form-control-file'}}) }}
+      </div>
 
-    <button type="submit">Publier l’annonce</button>
+      <button type="submit" class="btn-submit">Publier l’annonce</button>
   
-  {{ form_end(form) }}
+    {{ form_end(form) }}
+  </div>
+
+  {# Script pour remplacé la virgule (des centimes) par un point avant l'envoie #}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const priceInput = document.querySelector('input[name="post[price]"]');
+        if (priceInput) {
+            priceInput.addEventListener("input", function() {
+                this.value = this.value.replace(',', '.');
+            });
+        }
+    });
+  </script>
 {% endblock %}
