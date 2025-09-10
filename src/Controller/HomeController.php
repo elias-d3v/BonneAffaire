@@ -23,7 +23,7 @@ class HomeController extends AbstractController
 
         if ($this->getUser()) {
             foreach ($this->getUser()->getFavorites() as $favori) {
-                $favorisIds[] = $favori->getPost()->getId(); // ⚡ récupère l’ID du post
+                $favorisIds[] = $favori->getPost()->getId();
             }
         }
 
