@@ -6,30 +6,23 @@
   </div>
 
   <div class="search">
-      <input type="text" placeholder="Rechercher une annonce...">
-      <button><i class="fas fa-search"></i></button>
+      <form action="{{ path('post_list') }}" method="get" style="display: contents;">
+          <input type="text" name="q" placeholder="Rechercher une annonce..." value="{{ q ?? '' }}">
+          <button type="submit"></button>
+      </form>
   </div>
 
   <div id="menu-wrapper" class="menu-wrapper">
     <div class="arrow left-arrow">&lt;</div>
     <ul id="menu" class="menu">
-        <li class="item">Immobilier</li>
-        <li class="item">Véhicules</li>
-        <li class="item">Emploi</li>
-        <li class="item">Maison & Jardin</li>
-        <li class="item">Électronique</li>
-        <li class="item">Loisirs</li>
-        <li class="item">Autres</li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 8 }) }}">Immobilier</a></li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 9 }) }}">Véhicules</a></li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 10 }) }}">Emploi</a></li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 11 }) }}">Maison & Jardin</a></li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 12 }) }}">Électronique</a></li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 13 }) }}">Loisirs</a></li>
+      <li class="item"><a href="{{ path('post_list', { sort: 'date', category: 14 }) }}">Autres</a></li>
     </ul>
     <div class="arrow right-arrow">&gt;</div>
   </div>
-  
 </header>
-
-<!-- Bottom nav uniquement en mobile -->
-<nav class="bottom-nav">
-    <a href="#"><i class="fas fa-plus-circle"></i><span>Vendre</span></a>
-    <a href="#"><i class="fas fa-heart"></i><span>Favoris</span></a>
-    <a href="#"><i class="fas fa-envelope"></i><span>Messages</span></a>
-    <a href="#"><i class="fas fa-user"></i><span>Mon compte</span></a>
-</nav>

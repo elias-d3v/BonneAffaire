@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<a href="{{ path('favorites_add', {id: post.id}) }}" class="btn btn-warning">⭐ Ajouter aux favoris</a>
 <a href="{{ path('report_post', {id: post.id}) }}" class="btn btn-danger">
     🚩 Signaler cette annonce
 </a>

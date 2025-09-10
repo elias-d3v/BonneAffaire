@@ -16,35 +16,36 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function findAllSorted(string $sort = 'date', ?int $categoryId = null, ?string $postalCode = null)
+    public function findAllSorted($sort, $categoryId = null, $dept = null, $q = null): array
     {
-        $qb = $this->createQueryBuilder('p');
+        $conn = $this->getEntityManager()->getConnection();
 
-        // Tri
-        if ($sort === 'prix') {
-            $qb->orderBy('p.price', 'ASC');
-        } else {
-            $qb->orderBy('p.publishedAt', 'DESC');
-        }
+        $sql = 'SELECT * FROM post WHERE status = :status';
+        $params = ['status' => 'validated'];
 
-        // Filtre catégorie
         if ($categoryId) {
-            $qb->andWhere('p.category = :cat')
-            ->setParameter('cat', $categoryId);
+            $sql .= ' AND category_id = :categoryId';
+            $params['categoryId'] = $categoryId;
         }
 
-        // Filtre département (2 premiers chiffres du code postal)
-        if ($postalCode) {
-            $qb->andWhere('p.postalCode LIKE :dept')
-            ->setParameter('dept', $postalCode.'%');
+        if ($dept) {
+            $sql .= ' AND postal_code LIKE :dept';
+            $params['dept'] = $dept . '%';
         }
 
-        // Status validé
-        $qb->andWhere('p.status = :status')
-        ->setParameter('status', 'validated');
+        if ($q) {
+            $sql .= ' AND (title LIKE :q OR description LIKE :q)';
+            $params['q'] = '%'.$q.'%';
+        }
 
-        return $qb->getQuery()->getResult();
+        $sql .= $sort === 'price' ? ' ORDER BY price ASC' : ' ORDER BY published_at DESC';
+
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->executeQuery($params);
+
+        return $result->fetchAllAssociative();
     }
+
 
     public function findByCategory($categoryId)
     {

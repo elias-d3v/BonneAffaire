@@ -23,15 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -47,39 +41,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $ipAddress = null;
 
-    /**
-     * @var Collection<int, Post>
-     */
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user', cascade: ["remove"], orphanRemoval: true)]
     private Collection $posts;
 
-    /**
-     * @var Collection<int, Favorite>
-     */
     #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'user')]
     private Collection $post;
 
-    /**
-     * @var Collection<int, Favorite>
-     */
     #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'user')]
     private Collection $favorites;
 
-    /**
-     * @var Collection<int, Report>
-     */
     #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'author')]
     private Collection $reports;
 
-    /**
-     * @var Collection<int, Message>
-     */
     #[ORM\OneToMany(mappedBy: "sender", targetEntity: Message::class, cascade: ["remove"], orphanRemoval: true)]
     private Collection $sentMessages;
     
-    /**
-     * @var Collection<int, Message>
-     */
     #[ORM\OneToMany(mappedBy: "receiver", targetEntity: Message::class, cascade: ["remove"], orphanRemoval: true)]
     private Collection $receivedMessages;
 
