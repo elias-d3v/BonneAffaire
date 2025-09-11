@@ -86,30 +86,31 @@ class MessageController extends AbstractController
     }
 
     #[Route('/contact/{id}', name: 'message_contact')]
-    public function contact(Post $post, EntityManagerInterface $em): Response
+    public function contact(Post $post, Request $request, EntityManagerInterface $em): Response
     {
-        if (!$user = $this->getUser()) {
+        $user = $this->getUser();
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
         $receiver = $post->getUser();
-
         if ($receiver === $user) {
             $this->addFlash('warning', 'Vous ne pouvez pas envoyer de message à vous-même.');
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
 
+        $content = $request->request->get('content', "Bonjour ".$receiver->getName().", je suis intéressé par votre annonce. Cordialement, ".$user->getName());
+
         $message = new Message();
         $message->setSender($user);
         $message->setReceiver($receiver);
-        $message->setContent("Bonjour ".$receiver->getName().", je suis intéressé par votre annonce. Cordialement, ".$user->getName());
+        $message->setContent($content);
         $message->setSentAt(new \DateTimeImmutable());
 
         $em->persist($message);
         $em->flush();
 
         $this->addFlash('success', 'Votre message a été envoyé à '.$receiver->getName());
-
         return $this->redirectToRoute('messages_inbox');
     }
 }

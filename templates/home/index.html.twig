@@ -36,6 +36,7 @@
     <div class="grid">
       {% for post in last_posts %}
           <article class="card">
+            <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
                   class="favorite-btn"
                   data-url="{{ path('favorites_toggle', {id: post.id}) }}"
@@ -51,6 +52,7 @@
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>
               <span class="date">08/09/2025 à 21h19</span>
+            </a>
           </article>
         {% else %}
             <p>Aucune annonce pour le moment</p>
@@ -68,6 +70,7 @@
     <div class="grid">
       {% for post in last_posts %}
           <article class="card">
+            <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
                   class="favorite-btn"
                   data-url="{{ path('favorites_toggle', {id: post.id}) }}"
@@ -83,6 +86,7 @@
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>
               <span class="date">08/09/2025 à 21h19</span>
+            </a>
           </article>
         {% else %}
             <p>Aucune annonce pour le moment</p>
