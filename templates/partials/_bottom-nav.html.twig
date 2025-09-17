@@ -10,7 +10,9 @@
     <a href="{{ path('messages_inbox') }}" class="nav-item">
         <img src="{{ asset('images/chat-round-line-svgrepo-com.svg') }}" alt="Messages">
         <span>Messages</span>
-        <span class="badge">3</span>
+        {% if unreadCount > 0 %}
+            <span class="badge">{{ unreadCount }}</span>
+        {% endif %}
     </a>
     {% if app.user %}
     <a href="{{ path('app_profile_show', {id: app.user.id}) }}" class="nav-item">

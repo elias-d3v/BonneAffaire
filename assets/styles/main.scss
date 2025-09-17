@@ -5,6 +5,7 @@
 
 @use "components/scrollmenu";
 @use "components/bottom-navbar";
+@use "components/modal";
 
 @use "layout/header";
 @use "layout/footer";
@@ -13,3 +14,4 @@
 @use "pages/home";
 @use "pages/post";
 @use "pages/user";
+@use "pages/message";

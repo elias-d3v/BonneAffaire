@@ -59,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: "receiver", targetEntity: Message::class, cascade: ["remove"], orphanRemoval: true)]
     private Collection $receivedMessages;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $avatar = null;
+
     public function __construct()
     {
         $this->registrationDate = new \DateTimeImmutable();
@@ -324,5 +327,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getAvatarPath(): string
+    {
+        if ($this->avatar && file_exists(__DIR__ . '/../../public/uploads/avatars/' . $this->avatar)) {
+            return '/uploads/avatars/' . $this->avatar;
+        }
+
+        return '/images/default-avatar.jpg';
     }
 }
