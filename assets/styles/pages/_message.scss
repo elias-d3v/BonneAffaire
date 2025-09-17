@@ -1,0 +1,204 @@
+@use "../base/variables" as *;
+
+.inbox {
+  max-width: 800px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .conversation-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+
+    .conversation-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .avatar img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+      }
+
+      .conversation-info {
+        .username {
+          font-size: 1.6rem;
+          font-weight: 600;
+          margin: 0;
+        }
+        .preview {
+          font-size: 1.4rem;
+          color: #555;
+          margin-top: 0.2rem;
+        }
+      }
+    }
+
+    .conversation-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .date {
+        font-size: 1.2rem;
+        color: #888;
+      }
+
+      .btn {
+        background: $primary;
+        color: #fff;
+        padding: 0.5rem 1.2rem;
+        border-radius: 6px;
+        font-size: 1.3rem;
+        text-decoration: none;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: darken($primary, 10%);
+        }
+      }
+    }
+  }
+
+  .no-conv {
+    text-align: center;
+    font-size: 1.4rem;
+    color: #666;
+    margin-top: 2rem;
+  }
+}
+
+.conversation-page {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .conversation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $primary;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid white;
+
+    h2 {
+      margin: 0;
+      font-size: 1.4rem;
+
+      .conversation-receiver-name{font-weight: 600;}
+    }
+
+    .btn-back {
+      background: #fff;
+      color: $primary;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: 0.2s;
+
+      &:hover {
+        background: lighten($primary, 20%);
+        color: #fff;
+      }
+    }
+  }
+
+  .conversation-box {
+    flex: 1;
+    padding: 1rem;
+    background: #f9f9f9;
+    overflow-y: auto;
+    max-height: 500px;
+
+    .messages {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 0.8rem;
+
+      .message {
+        max-width: 70%;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        font-size: 1.3rem;
+        line-height: 1.4;
+
+        &.sent {
+          align-self: flex-end;
+          background: $primary;
+          color: #fff;
+        }
+
+        &.received {
+          align-self: flex-start;
+          background: #eaeaea;
+          color: #333;
+        }
+
+        .date {
+          display: block;
+          font-size: 1rem;
+          margin-top: 0.3rem;
+          opacity: 0.7;
+        }
+      }
+
+      .no-message {
+        text-align: center;
+        color: #999;
+        font-style: italic;
+      }
+    }
+  }
+
+  .message-form {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 0.8rem;
+    background: #fff;
+
+    textarea {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 0.8rem;
+      font-size: 1.3rem;
+      resize: none;
+    }
+
+    .btn-send {
+      margin-left: 0.8rem;
+      background: $primary;
+      color: #fff;
+      border: none;
+      padding: 0 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        background: darken($primary, 10%);
+      }
+    }
+  }
+}

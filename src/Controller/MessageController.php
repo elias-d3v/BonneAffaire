@@ -43,12 +43,11 @@ class MessageController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $me = $this->getUser();
         $content = $request->request->get('content');
 
         if ($content) {
             $message = new Message();
-            $message->setSender($me);
+            $message->setSender($this->getUser());
             $message->setReceiver($user);
             $message->setContent($content);
             $message->setSentAt(new \DateTimeImmutable());
@@ -63,8 +62,7 @@ class MessageController extends AbstractController
     #[Route('/fetch/{id}', name: 'messages_fetch')]
     public function fetch(User $user, MessageRepository $repo): Response
     {
-        $me = $this->getUser();
-        $messages = $repo->getConversation($me, $user);
+        $messages = $repo->getConversation($this->getUser(), $user);
 
         return $this->render('messages/_conversation.html.twig', [
             'messages' => $messages,
@@ -75,13 +73,15 @@ class MessageController extends AbstractController
     #[Route('/inbox', name: 'messages_inbox')]
     public function inbox(MessageRepository $repo): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $conversations = $repo->getConversations($user);
 
-        $me = $this->getUser();
-        $conversations = $repo->findConversations($me);
+        // Compte total des non lus
+        $unreadCount = $repo->countUnread($user);
 
         return $this->render('messages/inbox.html.twig', [
             'conversations' => $conversations,
+            'unreadCount' => $unreadCount,
         ]);
     }
 

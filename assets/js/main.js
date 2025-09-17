@@ -53,4 +53,26 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.appendChild(lightbox);
         });
     });
+
+
+
+    // CACHER NAVBAR QUAND ON ECRIT SUR MOBILE 
+
+    const navbar = document.querySelector(".bottom-nav");
+
+    if (!navbar) return;
+
+    // Quand un input ou textarea est focus alors cacher la navbar
+    document.addEventListener("focusin", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+            navbar.classList.add("hide-navbar");
+        }
+    });
+
+    // Quand l’input/textarea perd le focus alors réafficher
+    document.addEventListener("focusout", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+            navbar.classList.remove("hide-navbar");
+        }
+    });
 });

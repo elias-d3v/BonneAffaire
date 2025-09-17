@@ -1,25 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h2>Conversation avec {{ otherUser.name }}</h2>
+<section class="conversation-page">
+    <div class="conversation-header">
+        <a href="{{ path('messages_inbox') }}" class="btn-back">← Retour</a>
+        <h2>Conversation avec <span class="conversation-receiver-name">{{ otherUser.name }}</span></h2>
+    </div>
 
-<div id="conversation">
-    {% include 'messages/_conversation.html.twig' %}
-</div>
+    <div id="conversation" class="conversation-box">
+        {% include 'messages/_conversation.html.twig' %}
+    </div>
 
-<form method="post" action="{{ path('messages_send', {id: otherUser.id}) }}">
-    <textarea name="content" required></textarea>
-    <button type="submit">Envoyer</button>
-</form>
+    <form id="message-form" method="post" action="{{ path('messages_send', {id: otherUser.id}) }}" class="message-form">
+        <textarea name="content" placeholder="Écris ton message..." required></textarea>
+        <button type="submit" class="btn-send">Envoyer</button>
+    </form>
+</section>
 
 <script>
-    // refresh auto toutes les 5 secondes
-    setInterval(() => {
+    // Descend automatiquement en bas de la conversation
+    function scrollToBottom() {
+        const box = document.querySelector('#conversation');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    // Charge les messages
+    function loadMessages() {
         fetch("{{ path('messages_fetch', {id: otherUser.id}) }}")
             .then(res => res.text())
             .then(html => {
                 document.querySelector('#conversation').innerHTML = html;
+                scrollToBottom();
             });
-    }, 5000);
+    }
+
+    // Quand la page est prête
+    document.addEventListener("DOMContentLoaded", () => {
+        loadMessages(); // premier chargement
+        setInterval(loadMessages, 5000); // auto-refresh toutes les 5 sec
+
+        // Envoi d’un message en AJAX
+        document.querySelector("#message-form").addEventListener("submit", e => {
+            e.preventDefault();
+            const form = e.target;
+
+            fetch(form.action, { method: "POST", body: new FormData(form) })
+                .then(() => {
+                    form.reset();
+                    loadMessages(); // recharge les messages
+                });
+        });
+    });
 </script>
 {% endblock %}
