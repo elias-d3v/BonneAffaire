@@ -177,12 +177,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRegistrationDate(): ?\DateTime
+    public function getRegistrationDate(): ?\DateTimeImmutable
     {
         return $this->registrationDate;
     }
 
-    public function setRegistrationDate(\DateTime $registrationDate): static
+    public function setRegistrationDate(?\DateTimeImmutable $registrationDate): static
     {
         $this->registrationDate = $registrationDate;
 
@@ -342,10 +342,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getAvatarPath(): string
     {
-        if ($this->avatar && file_exists(__DIR__ . '/../../public/uploads/avatars/' . $this->avatar)) {
-            return '/uploads/avatars/' . $this->avatar;
-        }
-
-        return '/images/default-avatar.jpg';
+        return $this->avatar
+            ? '/uploads/avatars/' . $this->avatar
+            : '/images/default-avatar.jpg';
     }
 }
