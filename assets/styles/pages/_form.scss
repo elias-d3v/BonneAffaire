@@ -1,3 +1,5 @@
+@use "../base/variables" as *;
+
 .form-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -11,6 +13,32 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  .form-alt-text {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.4rem;
+
+    a {
+      color: $primary;
+      font-weight: 500;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .checkbox-group {
+    display: block;
+    align-items: center;
+
+    input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+  }
 }
 
 .form-group {
