@@ -29,6 +29,12 @@
       </div>
 
       <div class="form-group">
+        {{ form_label(registrationForm.avatar, 'Photo de profil', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(registrationForm.avatar, {'attr': {'class': 'form-control-file'}}) }}
+        {{ form_errors(registrationForm.avatar, {'attr': {'class': 'form-error'}}) }}
+      </div>
+
+      <div class="form-group">
         {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'form-error'}}) }}
