@@ -1,0 +1,85 @@
+@use "../base/variables" as *;
+
+.admin-dashboard {
+  padding: 2rem;
+
+  h1 {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    color: $primary;
+  }
+
+  .admin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .admin-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      color: $primary;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        text-align: left;
+      }
+
+      th {
+        background: $primary;
+        color: white;
+      }
+
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+    }
+
+    .btn-danger {
+      background: #ffdddd;
+      color: #c00;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+
+      &:hover { background: #ffb3b3; }
+    }
+
+    .btn-success {
+      background: #ddffdd;
+      color: #090;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+
+      &:hover { background: #b3ffb3; }
+    }
+
+    .btn-primary {
+      background: #dde9ff;
+      color: $primary;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+
+      &:hover { background: #aac7ff; }
+    }
+  }
+}

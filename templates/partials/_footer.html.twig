@@ -17,7 +17,10 @@
                 <li><a href="#">Mentions légales</a></li>
                 <li><a href="#">Aide / FAQ</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="#">Espace admin</a></li>
+                {% if app.user and ('ROLE_ADMIN' in app.user.roles) %}
+                    <li><a href="{{ path('admin_dashboard') }}">Espace admin</a></li>
+                {% endif %}
+
             </ul>
         </div>
 
