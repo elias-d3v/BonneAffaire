@@ -20,6 +20,14 @@
         <div><img src="{{ asset('uploads/' ~ post.image3) }}" alt="{{ post.title }}"></div>
       {% endif %}
     </div>
+
+    <button class="favorite-btn"
+        data-url="{{ path('favorites_toggle', {id: post.id}) }}"
+        data-favorited="{{ post.id in favorisIds ? 'true' : 'false' }}">
+        <img src="{{ asset(post.id in favorisIds
+            ? 'images/hearth-fill.svg'
+            : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
+    </button>
   </div>
 
   {# Infos principales #}
@@ -98,4 +106,40 @@ Bonjour {{ post.user.name }}, je suis intéressé par votre annonce. Cordialemen
     </form>
   </div>
 </div>
+
+<!-- Nouveautés -->
+  <section class="news">
+    <h2 class="title">Nouveautés</h2>
+    <div class="grid">
+      {% for post in last_posts %}
+        {% if post.status == 'validated' %}
+          <article class="card">
+            <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
+              <button 
+                  class="favorite-btn"
+                  data-url="{{ path('favorites_toggle', {id: post.id}) }}"
+                  data-favorited="{{ post.id in favorisIds ? 'true' : 'false' }}"
+              >
+                  <img src="{{ asset(post.id in favorisIds 
+                      ? 'images/hearth-fill.svg' 
+                      : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
+              </button>
+
+              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}">
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.price }} €</p>
+              <span>{{ post.location }}</span>
+              <span class="date">08/09/2025 à 21h19</span>
+            </a>
+          </article>
+        {% endif %}
+      {% else %}
+        <p>Aucune annonce pour le moment</p>
+      {% endfor %}
+
+      <div class="see-more">
+        <a href="{{ path('post_list') }}" class="btn">Voir plus</a>
+      </div>
+    </div>
+  </section>
 {% endblock %}

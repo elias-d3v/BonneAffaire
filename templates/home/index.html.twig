@@ -35,6 +35,7 @@
 
     <div class="grid">
       {% for post in last_posts %}
+        {% if post.status == 'validated' %}
           <article class="card">
             <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
@@ -54,8 +55,9 @@
               <span class="date">08/09/2025 à 21h19</span>
             </a>
           </article>
-        {% else %}
-            <p>Aucune annonce pour le moment</p>
+        {% endif %}
+      {% else %}
+        <p>Aucune annonce pour le moment</p>
       {% endfor %}
 
       <div class="see-more">
@@ -69,6 +71,7 @@
     <h2 class="title">Nouveautés</h2>
     <div class="grid">
       {% for post in last_posts %}
+        {% if post.status == 'validated' %}
           <article class="card">
             <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
@@ -88,8 +91,9 @@
               <span class="date">08/09/2025 à 21h19</span>
             </a>
           </article>
-        {% else %}
-            <p>Aucune annonce pour le moment</p>
+        {% endif %}
+      {% else %}
+        <p>Aucune annonce pour le moment</p>
       {% endfor %}
 
       <div class="see-more">
