@@ -40,6 +40,16 @@
         border: 1px solid #ddd;
         padding: 0.75rem;
         text-align: left;
+
+        .link {
+          color: $primary;
+          text-decoration: none;
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
 
       th {
@@ -49,6 +59,23 @@
 
       tr:nth-child(even) {
         background: #f9f9f9;
+      }
+
+      // colonne Actions
+      td:last-child, th:last-child {
+        width: 180px; // largeur fixe
+        text-align: center;
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+
+      a {
+        flex: 1; // chaque bouton prend la même largeur
+        text-align: center;
       }
     }
 

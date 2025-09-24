@@ -75,20 +75,4 @@ final class AdminController extends AbstractController
         $this->addFlash('success', 'Annonce validée.');
         return $this->redirectToRoute('admin_dashboard');
     }
-
-    #[Route('/admin/stats', name: 'admin_stats')]
-    public function stats(UserRepository $userRepo, PostRepository $postRepo, ReportRepository $reportRepo): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-        $stats = [
-            'totalUsers' => count($userRepo->findAll()),
-            'totalPosts' => count($postRepo->findAll()),
-            'totalReports' => count($reportRepo->findAll()),
-        ];
-
-        return $this->render('admin/stats.html.twig', [
-            'stats' => $stats,
-        ]);
-    }
 }
