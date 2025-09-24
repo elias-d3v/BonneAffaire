@@ -158,4 +158,17 @@ class PostController extends AbstractController
             'posts' => $posts,
         ]);
     }
+
+    #[Route('/post/{id}/delete', name: 'post_delete', methods: ['POST'])]
+    public function delete(Post $post, EntityManagerInterface $em, Request $request): Response
+    {
+        self::checkAccess($this->getUser(), 'OWNER_OR_ADMIN', $post);
+
+        $em->remove($post);
+        $em->flush();
+
+        $this->addFlash('success', 'Annonce supprimée avec succès ✅');
+
+        return $this->redirectToRoute('post_list');
+    }
 }

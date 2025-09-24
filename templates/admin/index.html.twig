@@ -54,8 +54,10 @@
                     <td>{{ post.title }}</td>
                     <td>{{ post.status }}</td>
                     <td>
+                      <div class="actions">
                         <a href="{{ path('admin_post_validate', {id: post.id}) }}" class="btn-success">Valider</a>
                         <a href="{{ path('admin_post_delete', {id: post.id}) }}" class="btn-danger">Supprimer</a>
+                      </div>
                     </td>
                 </tr>
             {% endif %}
@@ -81,36 +83,33 @@
         </thead>
         <tbody>
         {% for report in reports %}
-            {% if not report.isHandled and report.post.status != 'validated' %}
+            {% if not report.isHandled %}
             <tr>
                 <td>{{ report.id }}</td>
 
                 {# Auteur de l’annonce signalée #}
                 <td>
-                <a href="{{ path('app_profile_show', {id: report.author.id}) }}">
-                    {{ report.author.name }}
-                </a>
+                  <a href="{{ path('app_profile_show', {id: report.author.id}) }}" class="link">
+                      {{ report.author.name }}
+                  </a>
                 </td>
 
                 {# Utilisateur qui a signalé #}
                 <td>
-                <a href="{{ path('app_profile_show', {id: report.reporter.id}) }}">
-                    {{ report.reporter.name }}
-                </a>
+                  <a href="{{ path('app_profile_show', {id: report.reporter.id}) }} " class="link">
+                      {{ report.reporter.name }}
+                  </a>
                 </td>
 
                 {# L’annonce concernée #}
                 <td>
-                <a href="{{ path('post_show', {id: report.post.id}) }}">
-                    {{ report.post.title }}
-                </a>
+                  <a href="{{ path('post_show', {id: report.post.id}) }}" class="link">
+                      {{ report.post.title }}
+                  </a>
                 </td>
 
                 <td>
-                <a href="{{ path('admin_report_handle', {id: report.id}) }}" 
-                    class="btn btn-success">
-                    ✅ Marquer comme traité
-                </a>
+                  <a href="{{ path('admin_report_handle', {id: report.id}) }}" class="btn btn-success">Taiter</a>
                 </td>
             </tr>
             {% endif %}

@@ -51,6 +51,8 @@
     </div>
     {% if app.user and app.user != post.user %}
       <a href="#" class="btn btn-contact" data-open="contactModal">Contacter le vendeur</a>
+    {% else %}
+      <a href="{{ path('app_login') }}" class="btn btn-contact">Contacter le vendeur</a>
     {% endif %}
   </div>
 
@@ -68,44 +70,59 @@
     </div>
   </div>
 
-  {# Actions secondaires #}
-  <div class="post-actions">
-      <div class="action-col">
-          <a href="#" class="btn btn-report" data-open="reportModal">🚩 Signaler</a>
-      </div>
-      <div class="action-col">
-          {% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
-              <a href="{{ path('post_edit', {id: post.id}) }}" class="btn btn-edit">✏️ Modifier</a>
-          {% endif %}
-      </div>
+{# Actions secondaires #}
+<div class="post-actions">
+  <div class="action-col">
+    {% if app.user and app.user != post.user %}
+      <a href="#" class="btn btn-report" data-open="reportModal">🚩 Signaler</a>
+    {% else %}
+      <a href="#" class="btn btn-report">🚩 Signaler</a>
+    {% endif %}
   </div>
+  <div class="action-col">
+    {% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
+      <a href="{{ path('post_edit', {id: post.id}) }}" class="btn btn-edit">✏️ Modifier</a>
+    {% endif %}
+  </div>
+  <div class="action-col">
+    {% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
+      <a href="{{ path('post_delete', {id: post.id}) }}"
+        class="btn btn-report"
+        onclick="return confirm('⚠️ Es-tu sûr de vouloir supprimer cette annonce ?');">
+        🗑️ Supprimer
+      </a>
+    {% endif %}
+  </div>
+</div>
 
-{# --- Modale Signalement --- #}
-<div class="modal" id="reportModal">
-  <div class="modal-content">
-    <h2>🚩 Signaler cette annonce</h2>
-    <p>Êtes-vous sûr de vouloir signaler cette annonce ?</p>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" data-close>Annuler</button>
-      <a href="{{ path('report_post', {id: post.id}) }}" class="btn btn-danger">Confirmer</a>
+{% if app.user and app.user != post.user %}
+  {# --- Modale Signalement --- #}
+  <div class="modal" id="reportModal">
+    <div class="modal-content">
+      <h2>🚩 Signaler cette annonce</h2>
+      <p>Êtes-vous sûr de vouloir signaler cette annonce ?</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close>Annuler</button>
+        <a href="{{ path('report_post', {id: post.id}) }}" class="btn btn-danger">Confirmer</a>
+      </div>
     </div>
   </div>
-</div>
 
-{# --- Modale Contact --- #}
-<div class="modal" id="contactModal">
-  <div class="modal-content">
-    <h2>✉️ Contacter {{ post.user.name }}</h2>
-    <form method="post" action="{{ path('message_contact', {id: post.id}) }}">
-      <textarea name="content" class="form-control" rows="5">
-Bonjour {{ post.user.name }}, je suis intéressé par votre annonce. Cordialement, {{ app.user.name }}</textarea>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" data-close>Annuler</button>
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-      </div>
-    </form>
+  {# --- Modale Contact --- #}
+  <div class="modal" id="contactModal">
+    <div class="modal-content">
+      <h2>✉️ Contacter {{ post.user.name }}</h2>
+      <form method="post" action="{{ path('message_contact', {id: post.id}) }}">
+        <textarea name="content" class="form-control" rows="5">
+  Bonjour {{ post.user.name }}, je suis intéressé par votre annonce. Cordialement, {{ app.user.name }}</textarea>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-close>Annuler</button>
+          <button type="submit" class="btn btn-primary">Envoyer</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+{% endif %}
 
 <!-- Nouveautés -->
   <section class="news">
