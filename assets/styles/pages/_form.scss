@@ -56,14 +56,14 @@
   padding: 0.8rem 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:focus {
     border-color: #007bff;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
     outline: none;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 }
 

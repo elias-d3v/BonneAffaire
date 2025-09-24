@@ -10,31 +10,17 @@
   </section>
 
   <!-- Recherches récentes -->
-  <section class="recent-searches">
-    <h2 class="title">Recherches récentes</h2>
-    <div class="recent-grid">
-      <div class="search-card">
-        <button class="remove">&times;</button>
-        <h3>Scooter</h3>
-        <p>Toutes catégories</p>
-        <span class="location">Toute la France</span>
-      </div>
-      
-      <div class="search-card">
-        <button class="remove">&times;</button>
-        <h3>Maison</h3>
-        <p>Immobilier</p>
-        <span class="location">Paris (75)</span>
-      </div>
-    </div>
-  </section>
+<section class="recent-searches">
+  <h2 class="title">Recherches récentes</h2>
+  <div class="recent-grid" id="recentSearches"></div>
+</section>
 
   <!-- Suggestions -->
   <section class="suggestions">
     <h2 class="title">Vous pouvez aimer</h2>
 
     <div class="grid">
-      {% for post in last_posts %}
+      {% for post in last_posts_suggest %}
         {% if post.status == 'validated' %}
           <article class="card">
             <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
@@ -101,4 +87,23 @@
       </div>
     </div>
   </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const searches = JSON.parse(localStorage.getItem("recent_searches")) || [];
+    
+    if (searches.length > 0) {
+      const lastCategoryId = searches[0].category;
+      if (lastCategoryId && lastCategoryId !== "") {
+        const url = new URL(window.location.href);
+
+        // ajoute lastCategory seulement si pas déjà présent
+        if (!url.searchParams.has("lastCategory")) {
+          url.searchParams.set("lastCategory", lastCategoryId);
+          window.location.href = url.toString();
+        }
+      }
+    }
+  });
+  </script>
 {% endblock %}

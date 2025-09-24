@@ -37,6 +37,39 @@
     font-size: 0.9rem;
     transition: box-shadow 0.2s ease;
 
+    .search-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    h3 {
+      margin: 1.5rem 0 .3rem;
+      font-weight: 600;
+      color: #222;
+    }
+
+    p {
+      margin: .5rem 0;
+      color: #555;
+    }
+
+    .location {
+      margin-top: .3rem;
+      color: #777;
+
+      &::before {
+        content: "📍";
+        margin-right: .3rem;
+      }
+    }
+
+    &:hover {
+      h3 {
+        color: $primary; // bleu de ton thème
+      }
+    }
+  }
+
     &:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
