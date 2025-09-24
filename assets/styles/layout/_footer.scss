@@ -62,6 +62,9 @@
       align-items: flex-start;
       max-width: 1200px;
       margin-inline: auto;
+
+      h4{font-size: 1.6rem;}
+      p,a{font-size: 1.4rem;}
     }
 
     .social-links {
@@ -79,6 +82,8 @@
     .footer-bottom {
       text-align: center;
       margin-top: 1rem;
+      
+      p{font-size: 1.6rem;}
     }
   }
 }
