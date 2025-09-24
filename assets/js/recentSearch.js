@@ -70,6 +70,14 @@ function renderSearches() {
     `;
     container.appendChild(card);
   });
+
+   container.querySelectorAll(".remove").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const index = btn.getAttribute("data-index");
+      removeSearch(index);
+    });
+  });
 }
 
 window.addEventListener("resize", renderSearches);
