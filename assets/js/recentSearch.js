@@ -18,8 +18,8 @@ function addSearch(q, category, dept, categoryLabel, deptLabel) {
   searches.unshift({ q, category, dept, categoryLabel, deptLabel });
 
   // Garde seulement 3
-  if (searches.length > 3) {
-    searches = searches.slice(0, 3);
+  if (searches.length > 5) {
+    searches = searches.slice(0, 5);
   }
 
   saveSearches(searches);
@@ -41,18 +41,23 @@ function renderSearches() {
 
   container.innerHTML = "";
 
-  const searches = getSearches();
+  let searches = getSearches();
 
   if (searches.length === 0) {
     container.innerHTML = "<p>Aucune recherche récente</p>";
     return;
   }
 
+  // Déterminer combien afficher en fonction de l’écran
+  const maxToShow = window.innerWidth >= 768 ? 5 : 3;
+
+  // Couper la liste avant affichage
+  searches = searches.slice(0, maxToShow);
+
   searches.forEach((search, index) => {
     const card = document.createElement("div");
     card.className = "search-card";
 
-    // Construire l'URL pour relancer la recherche (sans sort)
     const url = `/post/list?q=${encodeURIComponent(search.q)}&category=${encodeURIComponent(search.category)}&dept=${encodeURIComponent(search.dept)}`;
 
     card.innerHTML = `
@@ -65,16 +70,9 @@ function renderSearches() {
     `;
     container.appendChild(card);
   });
-
-  // Attache les events "supprimer"
-  document.querySelectorAll(".remove").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const index = btn.getAttribute("data-index");
-      removeSearch(index);
-    });
-  });
 }
+
+window.addEventListener("resize", renderSearches);
 
 // Init au chargement
 document.addEventListener("DOMContentLoaded", () => {

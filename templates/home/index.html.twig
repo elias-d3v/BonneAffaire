@@ -3,10 +3,12 @@
 {% block title %}Accueil - BonneAffaire{% endblock %}
 
 {% block body %}
-  <!-- Bloc promo -->
+  <!-- Bloc CTA -->
   <section class="promo">
     <p>C’est le moment de vendre !</p>
-    <a href="{{ path('post_new') }}" class="btn">Publier une annonce</a>
+    <a href="{{ path('post_new') }}" class="btn">
+    <img src="/images/add-circle-svgrepo-com.svg" alt="Vendre" class="icon">
+    Publier une annonce</a>
   </section>
 
   <!-- Recherches récentes -->
@@ -22,7 +24,7 @@
     <div class="grid">
       {% for post in last_posts_suggest %}
         {% if post.status == 'validated' %}
-          <article class="card">
+          <article class="card {{ loop.index > 2 ? 'hide-mobile' : '' }}">
             <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
                   class="favorite-btn"
@@ -58,7 +60,7 @@
     <div class="grid">
       {% for post in last_posts %}
         {% if post.status == 'validated' %}
-          <article class="card">
+          <article class="card {{ loop.index > 2 ? 'hide-mobile' : '' }}">
             <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
                   class="favorite-btn"
@@ -70,7 +72,7 @@
                       : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
               </button>
 
-              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}">
+              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}" class="post-image">
               <h3>{{ post.title }}</h3>
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>

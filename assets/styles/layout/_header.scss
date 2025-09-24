@@ -99,7 +99,7 @@
 }
 
 // Responsive Desktop
-@media (min-width: 768px) {
+@media (min-width: $bp-tablet) {
   .menu-wrapper {
     display: none;
   }
