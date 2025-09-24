@@ -167,8 +167,6 @@ class PostController extends AbstractController
         $em->remove($post);
         $em->flush();
 
-        $this->addFlash('success', 'Annonce supprimée avec succès ✅');
-
         return $this->redirectToRoute('post_list');
     }
 }

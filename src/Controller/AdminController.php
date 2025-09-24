@@ -37,7 +37,6 @@ final class AdminController extends AbstractController
         $em->remove($user);
         $em->flush();
 
-        $this->addFlash('success', 'Utilisateur supprimé.');
         return $this->redirectToRoute('admin_dashboard');
     }
 
@@ -48,7 +47,6 @@ final class AdminController extends AbstractController
         $em->remove($post);
         $em->flush();
 
-        $this->addFlash('success', 'Annonce supprimée.');
         return $this->redirectToRoute('admin_dashboard');
     }
 
@@ -60,7 +58,6 @@ final class AdminController extends AbstractController
         $report->setIsHandled(true);
         $em->flush();
 
-        $this->addFlash('success', 'Signalement marqué comme traité.');
         return $this->redirectToRoute('admin_dashboard');
     }
 
@@ -72,7 +69,6 @@ final class AdminController extends AbstractController
         $post->setStatus('validated');
         $em->flush();
 
-        $this->addFlash('success', 'Annonce validée.');
         return $this->redirectToRoute('admin_dashboard');
     }
 }
