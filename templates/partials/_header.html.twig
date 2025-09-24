@@ -1,15 +1,47 @@
 <header class="main-header">
-  <div class="logo">
-    <a href="{{ path('home') }}">
-      <img src="{{ asset('images/logo.png') }}" alt="Bonne Affaire">
-    </a>
-  </div>
+  <div class="header-top">
+    <div class="logo">
+      <a href="{{ path('home') }}">
+        <img src="{{ asset('images/logo.png') }}" alt="Bonne Affaire">
+      </a>
+    </div>
 
-  <div class="search">
+    <div class="search">
       <form action="{{ path('post_list') }}" method="get" style="display: contents;">
-          <input type="text" name="q" placeholder="Rechercher une annonce..." value="{{ q ?? '' }}">
-          <button type="submit"></button>
+        <input type="text" name="q" placeholder="Rechercher une annonce..." value="{{ q ?? '' }}">
+        <button type="submit"></button>
       </form>
+    </div>
+
+    {# Actions visibles uniquement en desktop #}
+    <nav class="desktop-nav">
+      <a href="{{ path('post_new') }}" class="nav-item">
+        <img src="{{ asset('images/add-circle-svgrepo-com.svg') }}" alt="Vendre" class="icon">
+        Vendre
+      </a>
+      <a href="{{ path('favorites_list') }}" class="nav-item">
+        <img src="{{ asset('images/heart-alt-svgrepo-com.svg') }}" alt="Favoris" class="icon">
+        Favoris
+      </a>
+      <a href="{{ path('messages_inbox') }}" class="nav-item">
+        <img src="{{ asset('images/chat-round-line-svgrepo-com.svg') }}" alt="Messages" class="icon">
+        Messages
+        {% if unreadCount > 0 %}
+          <span class="badge">{{ unreadCount }}</span>
+        {% endif %}
+      </a>
+      {% if app.user %}
+        <a href="{{ path('app_profile_show', {id: app.user.id}) }}" class="nav-item">
+          <img src="{{ asset('images/user-alt-1-svgrepo-com.svg') }}" alt="Mon compte" class="icon">
+          Mon compte
+        </a>
+      {% else %}
+        <a href="{{ path('app_login') }}" class="nav-item">
+          <img src="{{ asset('images/user-alt-1-svgrepo-com.svg') }}" alt="Se connecter" class="icon">
+          Se connecter
+        </a>
+      {% endif %}
+    </nav>
   </div>
 
   <div id="menu-wrapper" class="menu-wrapper">
@@ -25,8 +57,16 @@
     </ul>
     <div class="arrow right-arrow">&gt;</div>
   </div>
+
+  <nav class="desktop-categories">
+    <ul>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 8 }) }}">Immobilier</a></li>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 9 }) }}">Véhicules</a></li>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 10 }) }}">Emploi</a></li>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 11 }) }}">Maison & Jardin</a></li>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 12 }) }}">Électronique</a></li>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 13 }) }}">Loisirs</a></li>
+      <li><a href="{{ path('post_list', { sort: 'date', category: 14 }) }}">Autres</a></li>
+    </ul>
+  </nav>
 </header>
-
-<script>
-
-</script>
