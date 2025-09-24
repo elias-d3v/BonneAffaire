@@ -1,12 +1,62 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Profil de {{ user.name }}</h1>
-    <p>Email : {{ user.email }}</p>
-    <p>Téléphone : {{ user.phone }}</p>
-    <p>Date d’inscription : {{ user.registrationDate|date('d/m/Y H:i') }}</p>
-
-    {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.id == user.id %}
-        <a href="{{ path('app_profile_show', {id: user.id}) }}">Modifier mon profil</a>
+<section class="page-banner">
+    {% if isOwner %}
+        <h1>Mon profil</h1>
+    {% else %}
+        <h1>Profil de {{ user.name }}</h1>
     {% endif %}
+</section>
+<div class="profile-page">
+
+    <div class="profile-header">
+        <img src="{{ user.avatar ? asset(user.avatarPath) : asset('images/default-avatar.jpg') }}"
+             alt="Avatar de {{ user.name }}" class="avatar">
+
+        <div class="user-info">
+            <h1>{{ user.name }}</h1>
+            <p>⭐ <strong>4,9 / 5</strong></p>
+            <p class="date">Membre depuis le : {{ user.registrationDate|date('d/m/Y') }}</p>
+        </div>
+    </div>
+
+    {% if isOwner %}
+        <div class="profile-actions">
+            <a href="{{ path('app_profile_edit', {id: user.id}) }}" class="btn-edit">✏️ Modifier mon profil</a>
+            <a href="{{ path('app_logout') }}" class="btn-logout">🚪 Se déconnecter</a>
+        </div>
+    {% endif %}
+
+    <section class="news">
+        <h2 class="title">Ses annonces</h2>
+        <div class="grid">
+            {% for post in user.posts %}
+                {% if post.status == 'validated' %}
+                    <article class="card">
+                        <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
+                            <button 
+                                class="favorite-btn"
+                                data-url="{{ path('favorites_toggle', {id: post.id}) }}"
+                                data-favorited="{{ post.id in favorisIds ? 'true' : 'false' }}"
+                            >
+                                <img src="{{ asset(post.id in favorisIds 
+                                    ? 'images/hearth-fill.svg' 
+                                    : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
+                            </button>
+
+                            <img src="{{ post.image1 ? asset('uploads/' ~ post.image1) : asset('images/no-image.png') }}" alt="{{ post.title }}">
+                            <h3>{{ post.title }}</h3>
+                            <p>{{ post.price }} €</p>
+                            <span>{{ post.location }}</span>
+                            <span class="date">{{ post.publishedAt|date('d/m/Y à H\\hi') }}</span>
+                        </a>
+                    </article>
+                {% endif %}
+            {% else %}
+                <p>Aucune annonce pour le moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
 {% endblock %}

@@ -1,84 +1,127 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Administration - Dashboard</h1>
+<section class="admin-dashboard">
+  <h1>Tableau de bord admin</h1>
 
-<h2>Utilisateurs</h2>
-<table border="1" cellpadding="5">
-    <tr>
-        <th>ID</th>
-        <th>Nom</th>
-        <th>Email</th>
-        <th>Actions</th>
-    </tr>
-    {% for user in users %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-                <a href="{{ path('admin_user_delete', {id: user.id}) }}" 
-                   onclick="return confirm('Supprimer cet utilisateur ?')">❌ Supprimer</a>
-            </td>
-        </tr>
-    {% else %}
-        <tr><td colspan="4">Aucun utilisateur</td></tr>
-    {% endfor %}
-</table>
+  <div class="admin-grid">
+    <!-- Utilisateurs -->
+    <div class="admin-card">
+      <h2>Utilisateurs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Nom</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.name }}</td>
+              <td>
+                <a href="{{ path('admin_user_delete', {id: user.id}) }}" class="btn-danger">Supprimer</a>
+              </td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4">Aucun utilisateur</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-<h2>Annonces</h2>
-<table border="1" cellpadding="5">
-    <tr>
-        <th>ID</th>
-        <th>Titre</th>
-        <th>Prix</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-    {% for post in posts %}
-        <tr>
-            <td>{{ post.id }}</td>
-            <td>{{ post.title }}</td>
-            <td>{{ post.price }} €</td>
-            <td>{{ post.status }}</td>
-            <td>
-                {% if post.status != 'validated' %}
-                    <a href="{{ path('admin_post_validate', {id: post.id}) }}">✅ Valider</a>
-                {% endif %}
-                <a href="{{ path('admin_post_delete', {id: post.id}) }}" 
-                   onclick="return confirm('Supprimer cette annonce ?')">❌ Supprimer</a>
-            </td>
-        </tr>
-    {% else %}
-        <tr><td colspan="5">Aucune annonce</td></tr>
-    {% endfor %}
-</table>
+    <!-- Annonces -->
+    <div class="admin-card">
+      <h2>Annonces en attende</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+            {% if post.status != "validated" %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.status }}</td>
+                    <td>
+                        <a href="{{ path('admin_post_validate', {id: post.id}) }}" class="btn-success">Valider</a>
+                        <a href="{{ path('admin_post_delete', {id: post.id}) }}" class="btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+            {% endif %}
+          {% else %}
+            <tr><td colspan="4">Aucune annonce</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-<h2>Signalements</h2>
-<table border="1" cellpadding="5">
-    <tr>
-        <th>ID</th>
-        <th>Annonce</th>
-        <th>Reporter</th>
-        <th>Statut</th>
-        <th>Actions</th>
-    </tr>
-    {% for report in reports %}
-        <tr>
-            <td>{{ report.id }}</td>
-            <td>{{ report.post.title }}</td>
-            <td>{{ report.reporter.name }}</td>
-            <td>{{ report.isHandled ? '✅ Traité' : '⏳ En attente' }}</td>
-            <td>
-                {% if not report.isHandled %}
-                    <a href="{{ path('admin_report_handle', {id: report.id}) }}">📌 Marquer comme traité</a>
-                {% endif %}
-            </td>
-        </tr>
-    {% else %}
-        <tr><td colspan="5">Aucun signalement</td></tr>
-    {% endfor %}
-</table>
+    <!-- Signalements -->
+    <div class="admin-card">
+      <h2>Signalements</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Auteur de l'annonce</th>
+            <th>Auteur signalement</th>
+            <th>Annonce</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for report in reports %}
+            {% if not report.isHandled and report.post.status != 'validated' %}
+            <tr>
+                <td>{{ report.id }}</td>
 
-<a href="{{ path('admin_stats') }}">📊 Voir les statistiques</a>
+                {# Auteur de l’annonce signalée #}
+                <td>
+                <a href="{{ path('app_profile_show', {id: report.author.id}) }}">
+                    {{ report.author.name }}
+                </a>
+                </td>
+
+                {# Utilisateur qui a signalé #}
+                <td>
+                <a href="{{ path('app_profile_show', {id: report.reporter.id}) }}">
+                    {{ report.reporter.name }}
+                </a>
+                </td>
+
+                {# L’annonce concernée #}
+                <td>
+                <a href="{{ path('post_show', {id: report.post.id}) }}">
+                    {{ report.post.title }}
+                </a>
+                </td>
+
+                <td>
+                <a href="{{ path('admin_report_handle', {id: report.id}) }}" 
+                    class="btn btn-success">
+                    ✅ Marquer comme traité
+                </a>
+                </td>
+            </tr>
+            {% endif %}
+        {% else %}
+            <tr>
+            <td colspan="5">Aucun signalement en attente 🚀</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 {% endblock %}

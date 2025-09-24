@@ -147,6 +147,23 @@
   padding: 20px;
   background: #fff;
   border-radius: 10px;
+  position: relative;
+
+  .favorite-btn {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 40%;
+  padding: 5px 10px 0 10px;
+
+      img {
+      width: 35px;
+      height: 35px;
+    }
+  }
 
   .slick-slider img {
     width: 100%;

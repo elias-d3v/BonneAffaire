@@ -89,10 +89,25 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', name: 'post_show')]
-    public function show(Post $post): Response
+    public function show(Post $post, PostRepository $postRepository): Response
     {
+        $lastPosts = $postRepository->findBy(
+            ['status' => 'validated'],
+            ['publishedAt' => 'DESC'],
+            2
+        );
+
+        $favorisIds = [];
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getFavorites() as $favori) {
+                $favorisIds[] = $favori->getPost()->getId();
+            }
+        }
+
         return $this->render('post/show.html.twig', [
+            'last_posts' => $lastPosts,
             'post' => $post,
+            'favorisIds' => $favorisIds,
         ]);
     }
 

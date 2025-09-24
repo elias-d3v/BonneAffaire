@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Favorite;
 use App\Entity\Post;
+use App\Security\AccessChecker;
 use App\Repository\FavoriteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ class FavoriteController extends AbstractController
     #[Route('/', name: 'favorites_list')]
     public function list(FavoriteRepository $repo): Response
     {
+        AccessChecker::checkAccess($this->getUser(), '');
         $favorites = $repo->findBy(['user' => $this->getUser()]);
 
         $favorisIds = [];

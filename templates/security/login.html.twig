@@ -1,28 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
-
 {% block body %}
-<form method="post">
+<section class="page-banner">
+  <h1>Connexion</h1>
+</section>
+
+<div class="form-container">
+  <form method="post" class="custom-form">
+
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+      <div class="form-error">
+        Identifiants invalides. Veuillez réessayer.
+      </div>
     {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+    <div class="form-group">
+      <label for="inputEmail" class="form-label">Adresse email</label>
+      <input 
+        type="email"
+        value="{{ last_username }}"
+        name="email"
+        id="inputEmail"
+        class="form-control"
+        required
+        autofocus
+      >
+    </div>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+    <div class="form-group">
+      <label for="inputPassword" class="form-label">Mot de passe</label>
+      <input 
+        type="password"
+        name="password"
+        id="inputPassword"
+        class="form-control"
+        required
+      >
+    </div>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    <div class="form-group">
+      <button class="btn-submit" type="submit">
+        Se connecter
+      </button>
+    </div>
+
+    <p class="form-alt-text">
+      Pas encore de compte ?
+      <a href="{{ path('app_register') }}">Créer un compte</a>
+    </p>
+
+  </form>
+</div>
 {% endblock %}

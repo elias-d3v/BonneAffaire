@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Message;
 use App\Entity\User;
+use App\Security\AccessChecker;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,7 @@ class MessageController extends AbstractController
     #[Route('/conversation/{id}', name: 'messages_conversation')]
     public function conversation(User $user, MessageRepository $repo, EntityManagerInterface $em): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        AccessChecker::checkAccess($this->getUser(), '');
 
         $me = $this->getUser();
         $messages = $repo->getConversation($me, $user);
@@ -41,7 +42,7 @@ class MessageController extends AbstractController
     #[Route('/send/{id}', name: 'messages_send', methods: ['POST'])]
     public function send(User $user, Request $request, EntityManagerInterface $em): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        AccessChecker::checkAccess($this->getUser(), '');
 
         $content = $request->request->get('content');
 
@@ -73,6 +74,7 @@ class MessageController extends AbstractController
     #[Route('/inbox', name: 'messages_inbox')]
     public function inbox(MessageRepository $repo): Response
     {
+        AccessChecker::checkAccess($this->getUser(), '');
         $user = $this->getUser();
         $conversations = $repo->getConversations($user);
 

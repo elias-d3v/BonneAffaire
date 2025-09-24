@@ -1,14 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Mon profil</h1>
+<section class="page-banner">
+    <h1>Modifier mon profil</h1>
+</section>
 
-    <p>Email : {{ user.email }}</p>
-    <p>Date d’inscription : {{ user.registrationDate|date('d/m/Y H:i') }}</p>
+<div class="form-container">
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'class': 'custom-form'}}) }}
 
-    {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.phone) }}
-        <button class="btn btn-primary">Mettre à jour</button>
+      <div class="form-group">
+        {{ form_label(form.name, 'Nom complet', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.name, {'attr': {'class': 'form-error'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.phone, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.phone, {'attr': {'class': 'form-error'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.avatar, 'Photo de profil', {'label_attr': {'class': 'form-label'}}) }}
+        {% if user.avatar %}
+            <img src="{{ asset(user.avatarPath) }}" alt="Avatar actuel" style="max-width:150px; max-height:150px; border-radius: 50%;">
+        {% endif %}
+        {{ form_widget(form.avatar, {'attr': {'class': 'form-control-file'}}) }}
+        {{ form_errors(form.avatar, {'attr': {'class': 'form-error'}}) }}
+      </div>
+
+      <button type="submit" class="btn-submit">Enregistrer</button>
+
     {{ form_end(form) }}
+</div>
 {% endblock %}
