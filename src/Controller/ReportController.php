@@ -33,10 +33,6 @@ class ReportController extends AbstractController
 
             $em->persist($report);
             $em->flush();
-
-            $this->addFlash('success', 'Annonce signalée avec succès.');
-        } else {
-            $this->addFlash('warning', 'Vous avez déjà signalé cette annonce.');
         }
 
         return $this->redirectToRoute('post_show', ['id' => $post->getId()]);

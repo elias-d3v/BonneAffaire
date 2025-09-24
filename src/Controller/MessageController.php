@@ -97,7 +97,6 @@ class MessageController extends AbstractController
 
         $receiver = $post->getUser();
         if ($receiver === $user) {
-            $this->addFlash('warning', 'Vous ne pouvez pas envoyer de message à vous-même.');
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
 
@@ -112,7 +111,6 @@ class MessageController extends AbstractController
         $em->persist($message);
         $em->flush();
 
-        $this->addFlash('success', 'Votre message a été envoyé à '.$receiver->getName());
         return $this->redirectToRoute('messages_inbox');
     }
 }
