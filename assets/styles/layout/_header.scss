@@ -7,8 +7,8 @@
   text-align: center;
 
   .logo img {
-    height: 200px;
     margin-bottom: .5rem;
+	  width: 60%;
   }
 
   .search {
@@ -18,7 +18,7 @@
 
     input {
       flex: 1;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       max-width: 50%;
       padding: 1rem;
       border-radius: $radius-lg 0 0 $radius-lg;
@@ -100,10 +100,6 @@
 
 // Responsive Desktop
 @media (min-width: $bp-tablet) {
-  .menu-wrapper {
-    display: none;
-  }
-
   .main-header {
     text-align: left;
     padding: 1rem 2rem;
