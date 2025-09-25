@@ -6,7 +6,7 @@
   </section>
 
   {# filtres #}
-  <form method="get" action="{{ path('post_list') }}" class="mb-4">
+  <form method="get" action="{{ path('post_list') }}" class="filters-posts">
 
       {# On garde la recherche actuelle #}
       <input type="hidden" name="q" value="{{ q ?? '' }}">
@@ -61,7 +61,12 @@
               <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}">
             {% endif %}
 
-            <h3>{{ post.title }}</h3>
+            <h3>
+              {{ post.title|length > 22 
+                ? post.title|slice(0, 22) ~ '...' 
+                : post.title 
+              }}
+            </h3>
             <p>{{ post.price }} €</p>
             <span>{{ post.location }}</span>
             <span class="date">{{ post.published_at ? post.published_at|date('d/m/Y à H:i') }}</span>

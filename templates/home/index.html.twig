@@ -37,7 +37,12 @@
               </button>
 
               <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}" class="post-image">
-              <h3>{{ post.title }}</h3>
+              <h3>
+                {{ post.title|length > 22 
+                  ? post.title|slice(0, 22) ~ '...' 
+                  : post.title 
+                }}
+              </h3>
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>
               <span class="date">08/09/2025 à 21h19</span>
@@ -73,7 +78,12 @@
               </button>
 
               <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}" class="post-image">
-              <h3>{{ post.title }}</h3>
+              <h3>
+                {{ post.title|length > 22 
+                  ? post.title|slice(0, 22) ~ '...' 
+                  : post.title 
+                }}
+              </h3>
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>
               <span class="date">08/09/2025 à 21h19</span>
