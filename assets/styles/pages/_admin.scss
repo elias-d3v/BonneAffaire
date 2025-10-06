@@ -1,7 +1,7 @@
 @use "../base/variables" as *;
 
 .admin-dashboard {
-  padding: 2rem;
+  padding: 2rem 0;
 
   h1 {
     margin-bottom: 2rem;
@@ -14,17 +14,14 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   .admin-card {
     background: #fff;
-    padding: 1.5rem;
+    padding: 1.5rem 0;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 1.5rem;
 
     h2 {
       margin-bottom: 1rem;
@@ -108,5 +105,11 @@
 
       &:hover { background: #aac7ff; }
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
