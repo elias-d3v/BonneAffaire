@@ -150,21 +150,36 @@
       transform: translateY(0);
     }
   }
+}
 
   // Responsive Desktop
   @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-
-    select,
-    input[type="text"] {
-      flex: 1;
-      min-width: 200px;
+    .filters-posts {
+      flex-direction: row;
+      align-items: center;
+  
+      select,
+      input[type="text"] {
+        flex: 1;
+        min-width: 200px;
+      }
+  
+      button {
+        width: auto;
+        font-size: 1.4rem;
+      }
+  
+      select{font-size: 1.2rem;}
     }
 
-    button {
-      width: auto;
-      flex-shrink: 0;
+    .custom-form {
+      .form-group{
+        .form-label{font-size: 1.4rem;}
+        .btn-submit{font-size: 1.4rem;}
+        .required{font-size: 1.3rem;}
+      }
     }
   }
-}
+
+
+

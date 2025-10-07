@@ -105,7 +105,7 @@
     padding: 1rem 2rem;
 
     .logo img {
-      height: 105px;
+      width: 180px;
       margin: 0;
     }
 
@@ -113,6 +113,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-right: 2rem;
     }
 
     .search {
@@ -120,10 +121,10 @@
       margin: 0 2rem;
 
       input { 
-        max-width: 45%;
-        max-height: 24px;
+        max-width: 53%;
         font-size: 1.2rem;
         max-height: 16px;
+        padding: 1.5rem;
       }
     }
 

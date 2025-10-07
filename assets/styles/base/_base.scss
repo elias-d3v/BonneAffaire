@@ -208,11 +208,27 @@ html, body{
       .date {
         font-size: 1.3rem;
       }
+
+      .post-image {
+        height: 225px!important;
+      }
+      
+      img{height: 135px;}
     }
-  
+
     .see-more .btn {
       font-size: 1.6rem;
       padding: 1rem 1.6rem;
+    }
+  }
+
+  .post-info .grid {
+    .card{
+      .favorite-btn {padding: 7px 9px; img{width: 16px; height: 16px;}}
+      .presentation-img { height: 225px!important; }
+      h3{font-size: 1.4rem;}
+      p{font-size: 1.3rem;}
+      span{font-size: 1.1rem;}
     }
   }
 }
