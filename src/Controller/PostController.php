@@ -17,6 +17,7 @@ use App\Repository\CategoryRepository;
 #[Route('/post')]
 class PostController extends AbstractController
 {
+    // Création d'une nouvelle annonce
     #[Route('/new', name: 'post_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -28,7 +29,7 @@ class PostController extends AbstractController
             $post->setUser($this->getUser());
             $post->setPublishedAt(new \DateTimeImmutable());
 
-            // Gestion des 3 images
+            // Gestion de l’upload des trois images
             foreach (['image1', 'image2', 'image3'] as $field) {
                 $imageFile = $form->get($field)->getData();
                 if ($imageFile) {
@@ -53,6 +54,7 @@ class PostController extends AbstractController
         ]);
     }
 
+    // Liste des annonces avec filtres (catégorie, département, tri, recherche)
     #[Route('/list', name: 'post_list')]
     public function list(PostRepository $repo, Request $request, CategoryRepository $catRepo, ParameterBagInterface $params): Response
     {
@@ -61,11 +63,11 @@ class PostController extends AbstractController
         $dept = $request->query->get('dept') ?: null;
         $q = $request->query->get('q');
 
+        // Récupère les annonces selon les filtres appliqués
         $posts = $repo->findAllSorted($sort, $categoryId, $dept, $q);
-
         $categories = $catRepo->findAll();
 
-        // Favoris
+        // Récupère les favoris de l’utilisateur connecté
         $favorisIds = [];
         if ($this->getUser()) {
             foreach ($this->getUser()->getFavorites() as $favori) {
@@ -73,7 +75,7 @@ class PostController extends AbstractController
             }
         }
 
-        // Département (pour le filtre)
+        // Liste des départements (utilisée pour le filtre)
         $departments = $params->get('departements');
 
         return $this->render('post/list.html.twig', [
@@ -88,6 +90,7 @@ class PostController extends AbstractController
         ]);
     }
 
+    // Affiche une annonce et deux suggestions récentes
     #[Route('/{id<\d+>}', name: 'post_show')]
     public function show(Post $post, PostRepository $postRepository): Response
     {
@@ -111,9 +114,11 @@ class PostController extends AbstractController
         ]);
     }
 
+    // Modification d’une annonce existante
     #[Route('/{id}/edit', name: 'post_edit', methods: ['GET', 'POST'])]
     public function edit(Post $post, Request $request, EntityManagerInterface $em): Response
     {
+        // Vérifie que l'utilisateur est le propriétaire ou un administrateur
         AccessChecker::checkAccess($this->getUser(), 'OWNER_OR_ADMIN', $post);
         
         $form = $this->createForm(PostType::class, $post);
@@ -121,13 +126,14 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // On récupère les fichiers
+            // Récupère les images modifiées
             $imageFiles = [
                 'image1' => $form['image1']->getData(),
                 'image2' => $form['image2']->getData(),
                 'image3' => $form['image3']->getData(),
             ];
 
+            // Met à jour uniquement les images remplacée
             foreach ($imageFiles as $field => $imageFile) {
                 if ($imageFile) {
                     $newFilename = uniqid().'.'.$imageFile->guessExtension();
@@ -150,6 +156,7 @@ class PostController extends AbstractController
         ]);
     }
 
+    // Liste les annonces d’une catégorie spécifique
     #[Route('/category/{id}', name: 'post_by_category')]
     public function byCategory(PostRepository $repo, int $id): Response
     {
@@ -159,9 +166,11 @@ class PostController extends AbstractController
         ]);
     }
 
+    // Suppression d’une annonce
     #[Route('/post/{id}/delete', name: 'post_delete', methods: ['POST'])]
     public function delete(Post $post, EntityManagerInterface $em, Request $request): Response
     {
+        // Vérifie que l'utilisateur est propriétaire ou admin
         self::checkAccess($this->getUser(), 'OWNER_OR_ADMIN', $post);
 
         $em->remove($post);
