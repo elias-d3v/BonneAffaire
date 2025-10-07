@@ -10,7 +10,8 @@
         <div class="conversation-card">
             <div class="conversation-header">
                 <div class="avatar">
-                    <img src="{{ asset(conv.user.avatar ?: 'images/default-avatar.jpg') }}" alt="{{ conv.user.name }}">
+                    <img src="{{ conv.user.avatar ? asset(conv.user.avatarPath) : asset('images/default-avatar.jpg') }}"
+             alt="Avatar de {{ conv.user.name }}" class="avatar">
                 </div>
                 <div class="conversation-info">
                     <h2 class="username">{{ conv.user.name }}</h2>

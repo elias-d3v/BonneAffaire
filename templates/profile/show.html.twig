@@ -46,7 +46,12 @@
                             </button>
 
                             <img src="{{ post.image1 ? asset('uploads/' ~ post.image1) : asset('images/no-image.png') }}" alt="{{ post.title }}">
-                            <h3>{{ post.title }}</h3>
+                            <h3>
+                                {{ post.title|length > 22 
+                                ? post.title|slice(0, 22) ~ '...' 
+                                : post.title 
+                                }}
+                            </h3>
                             <p>{{ post.price }} €</p>
                             <span>{{ post.location }}</span>
                             <span class="date">{{ post.publishedAt|date('d/m/Y à H\\hi') }}</span>

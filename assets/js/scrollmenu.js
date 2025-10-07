@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const menu = document.getElementById("menu");
   const wrapper = document.getElementById("menu-wrapper");
 
-  menu.style.left = "0px"; // position initiale
+  menu.style.left = "0px";
 
   const updateArrows = () => {
     const wrapperWidth = wrapper.offsetWidth;

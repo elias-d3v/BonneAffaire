@@ -17,12 +17,12 @@
     {% if app.user %}
     <a href="{{ path('app_profile_show', {id: app.user.id}) }}" class="nav-item">
         <img src="{{ asset('images/user-alt-1-svgrepo-com.svg') }}" alt="Compte">
-        <span>Mon compte</span>
+        <span>Mon&nbsp;compte</span>
     </a>
     {% else %}
         <a href="{{ path('app_login') }}" class="nav-item">
             <img src="{{ asset('images/user-alt-1-svgrepo-com.svg') }}" alt="Connexion">
-            <span>Se connecter</span>
+            <span>Se&nbsp;connecter</span>
         </a>
     {% endif %}
 </nav>

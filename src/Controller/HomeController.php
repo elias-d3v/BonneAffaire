@@ -17,7 +17,7 @@ class HomeController extends AbstractController
         $lastPosts = $postRepository->findBy(
             ['status' => 'validated'],
             ['publishedAt' => 'DESC'],
-            2
+            4
         );
 
         $favorisIds = [];
@@ -34,13 +34,13 @@ class HomeController extends AbstractController
             $lastPostsSuggest = $postRepository->findBy(
                 ['category' => $lastCategoryId, 'status' => 'validated'],
                 ['publishedAt' => 'DESC'],
-                2
+                4
             );
         } else {
             $lastPostsSuggest = $postRepository->findBy(
                 ['status' => 'validated'],
                 ['publishedAt' => 'DESC'],
-                2
+                4
             );
         }
 

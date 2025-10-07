@@ -18,7 +18,7 @@
     text-align: left;
     h1 { font-size: 2rem; margin: 0; font-weight: 600;}
     .category { color: #777; margin-top: 0.5rem;}
-    .price { font-size: 1.8rem; font-weight: 600; color: #007bff; margin: 1rem 0; }
+    .price { font-size: 1.8rem; font-weight: 700; color: #007bff; margin: 1rem 0; }
   }
 
   .seller-card {
@@ -28,6 +28,7 @@
     border-radius: 10px;
     padding: 1rem 0;
     margin: 3rem 0;
+    gap: 1.2rem;
 
     .seller-info {
       display: flex;
@@ -40,8 +41,8 @@
       border-radius: 15px;
 
       .avatar {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         object-fit: cover;
       }
@@ -52,7 +53,7 @@
       }
 
       .seller-rating {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         color: #f5a623;
         display: flex;
         align-items: center;
@@ -67,7 +68,7 @@
       padding: 1rem 1.6rem;
       border-radius: 15px;
       text-decoration: none;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
   }
 
@@ -89,7 +90,7 @@
     }
 
     .post-description {
-      margin-top: 1.5rem;
+      margin-top: 1.3rem;
       padding-top: 1rem;
       border-top: 1px solid #e0e0e0;
 
@@ -151,8 +152,8 @@
 
   .favorite-btn {
   position: absolute;
-  top: 40px;
-  right: 40px;
+  top: 30px;
+  right: 30px;
   background: white;
   border: none;
   cursor: pointer;
@@ -160,22 +161,22 @@
   padding: 5px 10px 0 10px;
 
       img {
-      width: 35px;
-      height: 35px;
+      width: 20px;
+      height: 20px;
     }
   }
 
   .slick-slider img {
     width: 100%;
-    height: 500px;
+    height: 250px;
     object-fit: cover;
     border-radius: 8px; 
   }
 
   .slick-prev,
   .slick-next {
-    width: 60px;
-    height: 60px;
+    width: 35px;
+    height: 35px;
     z-index: 2;
     background: none;
     border: none;
@@ -201,7 +202,7 @@
   }
 
   .slick-prev {
-    left: -60px;
+    left: -36px;
 
     &::before {
       background-image: url('/images/previous-svgrepo-com.svg');
@@ -209,7 +210,7 @@
   }
 
   .slick-next {
-    right: -60px;
+    right: -35px;
 
     &::before {
       background-image: url('/images/next-svgrepo-com.svg');
@@ -231,7 +232,7 @@
   li {
     button {
       &:before {
-        font-size: 14px;
+        font-size: 10px;
         color: rgba(0, 0, 0, 0.4);
         transition: all 0.3s ease;
       }
