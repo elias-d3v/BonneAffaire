@@ -7,8 +7,8 @@
   text-align: center;
 
   .logo img {
-    height: 200px;
     margin-bottom: .5rem;
+	  width: 60%;
   }
 
   .search {
@@ -18,7 +18,7 @@
 
     input {
       flex: 1;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       max-width: 50%;
       padding: 1rem;
       border-radius: $radius-lg 0 0 $radius-lg;
@@ -39,7 +39,7 @@
       border-bottom: 4px solid $dark-grey;
       cursor: pointer;
 
-        &::after {
+      &::after {
         content: "";
         position: absolute;
         top: 50%;
@@ -78,6 +78,141 @@
       border: none;
       color: white;
       font-size: 1.2rem;
+    }
+  }
+
+  // DESKTOP UNIQUEMENT
+  .desktop-nav, .desktop-categories {
+    display: none;
+
+    .nav-item {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Responsive Desktop
+@media (min-width: $bp-tablet) {
+  .main-header {
+    text-align: left;
+    padding: 1rem 2rem;
+
+    .logo img {
+      width: 180px;
+      margin: 0;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 2rem;
+    }
+
+    .search {
+      flex: 1;
+      margin: 0 2rem;
+
+      input { 
+        max-width: 53%;
+        font-size: 1.2rem;
+        max-height: 16px;
+        padding: 1.5rem;
+      }
+    }
+
+    .search button::after{
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        font-size: 1.6rem;
+        font-weight: 500;
+        position: relative;
+
+        img.icon {
+          width: 30px;
+          height: 30px;
+          margin-left: 3rem;
+        }
+
+        &:first-child img.icon {
+          margin-left: 0;
+        }
+
+        .badge {
+          position: absolute;
+          top: -6px;
+          right: -12px;
+          background: #ff4d4d;
+          color: white;
+          font-size: 1.2rem;
+          font-weight: bold;
+          padding: 0.2rem 0.5rem;
+          border-radius: 50%;
+          min-width: 20px;
+          text-align: center;
+          line-height: 1.2;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    // Version desktop des catégories
+    .desktop-categories {
+      display: flex;
+      justify-content: center;
+      padding: 0.7rem 0 2rem 0;
+
+      ul {
+        display: flex;
+        gap: 1.2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        position: relative;
+        font-size: 1.6rem;
+        font-weight: 500;
+
+        &:not(:last-child)::after {
+          content: "•";
+          margin-left: 1.5rem;
+          color: white;
+          font-size: 1.1rem;
+        }
+      }
+
+      a {
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

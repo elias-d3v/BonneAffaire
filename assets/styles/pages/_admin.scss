@@ -1,0 +1,115 @@
+@use "../base/variables" as *;
+
+.admin-dashboard {
+  padding: 2rem 0;
+
+  h1 {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    color: $primary;
+  }
+
+  .admin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .admin-card {
+    background: #fff;
+    padding: 1.5rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      color: $primary;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        text-align: left;
+
+        .link {
+          color: $primary;
+          text-decoration: none;
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      th {
+        background: $primary;
+        color: white;
+      }
+
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+
+      // colonne Actions
+      td:last-child, th:last-child {
+        width: 180px; // largeur fixe
+        text-align: center;
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+
+      a {
+        flex: 1; // chaque bouton prend la même largeur
+        text-align: center;
+      }
+    }
+
+    .btn-danger {
+      background: #ffdddd;
+      color: #c00;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+
+      &:hover { background: #ffb3b3; }
+    }
+
+    .btn-success {
+      background: #ddffdd;
+      color: #090;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+
+      &:hover { background: #b3ffb3; }
+    }
+
+    .btn-primary {
+      background: #dde9ff;
+      color: $primary;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+
+      &:hover { background: #aac7ff; }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

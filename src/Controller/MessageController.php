@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Message;
 use App\Entity\User;
+use App\Security\AccessChecker;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,7 @@ class MessageController extends AbstractController
     #[Route('/conversation/{id}', name: 'messages_conversation')]
     public function conversation(User $user, MessageRepository $repo, EntityManagerInterface $em): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        AccessChecker::checkAccess($this->getUser(), '');
 
         $me = $this->getUser();
         $messages = $repo->getConversation($me, $user);
@@ -41,14 +42,13 @@ class MessageController extends AbstractController
     #[Route('/send/{id}', name: 'messages_send', methods: ['POST'])]
     public function send(User $user, Request $request, EntityManagerInterface $em): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        AccessChecker::checkAccess($this->getUser(), '');
 
-        $me = $this->getUser();
         $content = $request->request->get('content');
 
         if ($content) {
             $message = new Message();
-            $message->setSender($me);
+            $message->setSender($this->getUser());
             $message->setReceiver($user);
             $message->setContent($content);
             $message->setSentAt(new \DateTimeImmutable());
@@ -63,8 +63,7 @@ class MessageController extends AbstractController
     #[Route('/fetch/{id}', name: 'messages_fetch')]
     public function fetch(User $user, MessageRepository $repo): Response
     {
-        $me = $this->getUser();
-        $messages = $repo->getConversation($me, $user);
+        $messages = $repo->getConversation($this->getUser(), $user);
 
         return $this->render('messages/_conversation.html.twig', [
             'messages' => $messages,
@@ -75,40 +74,42 @@ class MessageController extends AbstractController
     #[Route('/inbox', name: 'messages_inbox')]
     public function inbox(MessageRepository $repo): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        AccessChecker::checkAccess($this->getUser(), '');
+        $user = $this->getUser();
+        $conversations = $repo->getConversations($user);
 
-        $me = $this->getUser();
-        $conversations = $repo->findConversations($me);
+        // Compte total des non lus
+        $unreadCount = $repo->countUnread($user);
 
         return $this->render('messages/inbox.html.twig', [
             'conversations' => $conversations,
+            'unreadCount' => $unreadCount,
         ]);
     }
 
     #[Route('/contact/{id}', name: 'message_contact')]
-    public function contact(Post $post, EntityManagerInterface $em): Response
+    public function contact(Post $post, Request $request, EntityManagerInterface $em): Response
     {
-        if (!$user = $this->getUser()) {
+        $user = $this->getUser();
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
         $receiver = $post->getUser();
-
         if ($receiver === $user) {
-            $this->addFlash('warning', 'Vous ne pouvez pas envoyer de message à vous-même.');
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
+
+        $content = $request->request->get('content', "Bonjour ".$receiver->getName().", je suis intéressé par votre annonce. Cordialement, ".$user->getName());
 
         $message = new Message();
         $message->setSender($user);
         $message->setReceiver($receiver);
-        $message->setContent("Bonjour ".$receiver->getName().", je suis intéressé par votre annonce. Cordialement, ".$user->getName());
+        $message->setContent($content);
         $message->setSentAt(new \DateTimeImmutable());
 
         $em->persist($message);
         $em->flush();
-
-        $this->addFlash('success', 'Votre message a été envoyé à '.$receiver->getName());
 
         return $this->redirectToRoute('messages_inbox');
     }

@@ -1,0 +1,249 @@
+@use "../base/variables" as *;
+
+.post-show {
+  max-width: 80%;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+
+  .main-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .post-header {
+    text-align: left;
+    h1 { font-size: 2rem; margin: 0; font-weight: 600;}
+    .category { color: #777; margin-top: 0.5rem;}
+    .price { font-size: 1.8rem; font-weight: 700; color: #007bff; margin: 1rem 0; }
+  }
+
+  .seller-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 1rem 0;
+    margin: 3rem 0;
+    gap: 1.2rem;
+
+    .seller-info {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: 1px solid #ddd;
+      padding: 1rem 1.5rem;
+      background: #fffdfd;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      border-radius: 15px;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .seller-name {
+        font-weight: 500;
+        font-size: 1.4rem;
+      }
+
+      .seller-rating {
+        font-size: 1.1rem;
+        color: #f5a623;
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+      }
+    }
+
+
+    .btn-contact {
+      background: #007bff;
+      color: white;
+      padding: 1rem 1.6rem;
+      border-radius: 15px;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+  }
+
+  // Bloc infos (lieu + état + description)
+  .post-meta-box {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: #fffdfd;
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.4rem;
+
+      strong {
+        color: #333;
+      }
+    }
+
+    .post-description {
+      margin-top: 1.3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e0e0e0;
+
+      h3 {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        color: #222;
+      }
+
+      p {
+        font-size: 1.4rem;
+        line-height: 1.6;
+        color: #555;
+      }
+    }
+  }
+
+  .post-gallery {
+    display: flex;
+    gap: 1rem;
+
+    img {
+      width: 48%;
+      border-radius: 8px;
+    }
+  }
+
+  .post-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+
+    .action-col {
+      flex: 1;
+      display: flex;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      padding: 0.7rem;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .btn-report { background: #ffdddd; color: #c00; }
+    .btn-edit { background: #eef; color: #00f; }
+  }
+}
+
+// Slider
+.post-slider-container {
+  max-width: 90%;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  position: relative;
+
+  .favorite-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 40%;
+  padding: 5px 10px 0 10px;
+
+      img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .slick-slider img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px; 
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: 35px;
+    height: 35px;
+    z-index: 2;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-size: 70%;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.8;
+    }
+
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+
+  .slick-prev {
+    left: -36px;
+
+    &::before {
+      background-image: url('/images/previous-svgrepo-com.svg');
+    }
+  }
+
+  .slick-next {
+    right: -35px;
+
+    &::before {
+      background-image: url('/images/next-svgrepo-com.svg');
+    }
+  }
+}
+
+.slider-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.slick-dots {
+  bottom: -30px;
+
+  li {
+    button {
+      &:before {
+        font-size: 10px;
+        color: rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      &:hover:before {
+        color: lighten($primary, 60%);
+      }
+    }
+
+    &.slick-active button:before {
+      color: $primary;
+    }
+  }
+}

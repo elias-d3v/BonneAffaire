@@ -5,20 +5,33 @@
     <h1>📩 Boîte de réception</h1>
 </section>
 
-<ul>
+<div class="inbox">
     {% for conv in conversations %}
-        <li>
-            <strong>{{ conv.user.name }}</strong> : 
-            {{ conv.lastMessage.content|slice(0, 50) ~ '...' }}
-            <br>
-            <small>{{ conv.lastMessage.sentAt|date('d/m/Y H:i') }}</small>
-            <br>
-            <a href="{{ path('messages_conversation', {id: conv.user.id}) }}">
-                Ouvrir la conversation →
-            </a>
-        </li>
+        <div class="conversation-card">
+            <div class="conversation-header">
+                <div class="avatar">
+                    <img src="{{ conv.user.avatar ? asset(conv.user.avatarPath) : asset('images/default-avatar.jpg') }}"
+             alt="Avatar de {{ conv.user.name }}" class="avatar">
+                </div>
+                <div class="conversation-info">
+                    <h2 class="username">{{ conv.user.name }}</h2>
+                    <p class="preview">
+                        {{ conv.lastMessage.content|slice(0, 50) ~ '...' }}
+                        {% if not conv.lastMessage.isRead and conv.lastMessage.receiver == app.user %}
+                            <span class="unread">(non lu)</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="conversation-footer">
+                <small class="date">{{ conv.lastMessage.sentAt|date('d/m/Y H:i') }}</small>
+                <a href="{{ path('messages_conversation', {id: conv.user.id}) }}" class="btn btn-primary">
+                    Ouvrir →
+                </a>
+            </div>
+        </div>
     {% else %}
-        <li>Aucune conversation pour l’instant.</li>
+        <p class="no-conv">Aucune conversation pour l’instant.</p>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

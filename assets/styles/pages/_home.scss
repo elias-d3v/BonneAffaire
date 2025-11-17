@@ -15,6 +15,8 @@
     padding: 1rem;
     border-radius: $radius;
     text-decoration: none;
+    
+    .icon {display: none;}
   }
 }
 
@@ -37,25 +39,58 @@
     font-size: 0.9rem;
     transition: box-shadow 0.2s ease;
 
+    .search-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    h3 {
+      margin: 1.5rem 0 .3rem;
+      font-weight: 600;
+      color: #222;
+    }
+
+    p {
+      margin: .5rem 0;
+      color: #555;
+    }
+
+    .location {
+      margin-top: .3rem;
+      color: #777;
+
+      &::before {
+        content: "📍";
+        margin-right: .3rem;
+      }
+    }
+
+    &:hover {
+      h3 {
+        color: $primary; // bleu de ton thème
+      }
+    }
+  }
+
     &:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     h3 {
       margin: 1.5rem 0 .3rem;
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 600;
     }
 
     p {
       margin: 1rem 0;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       color: #555;
     }
 
     .location {
       margin-top: .3rem;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: #777;
 
       &::before {
@@ -82,9 +117,80 @@
 }
 
 
-// Desktop
+// Responsive Desktop
 @media (min-width: $bp-tablet) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
+  .promo {
+    background: $primary;
+    border-radius: 2rem;
+    color: white;
+    padding: 4.1rem 2rem;
+    position: relative;
+    margin: 5rem 4rem;
+    overflow: hidden;
+
+    p {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn {
+      background: darken($primary, 15%);
+      font-size: 1.4rem;
+      padding: 1rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+
+      &:hover {
+        background: darken($primary, 25%);
+      }
+
+      .icon {
+        height: 30px;
+        width: 30px;
+        display: block;
+      }
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    &::before {
+      width: 140px;
+      height: 140px;
+      bottom: -5px;
+      left: -15px;
+      background-image: url("/images/beach_svgrepo.com.svg");
+      transform: rotate(5deg);
+    }
+
+    &::after {
+      width: 150px;
+      height: 150px;
+      bottom: -62px;
+      right: -15px;
+      background-image: url("/images/vagues.svg");
+      transform: rotate(-25deg);
+    }
+  }
+
+  .title{font-size: 2rem;}
+
+  .recent-searches, .suggestions, .news {
+    padding-left: 4rem;
+    padding-right: 4rem;
+    .recent-grid{
+      grid-template-columns: repeat(5, 1fr);
+      
+      .search-card{
+        padding: 1rem 1rem 3rem 1rem;
+        h3,p,.location{font-size: 1.6rem;}
+      }
+    }
   }
 }

@@ -89,10 +89,25 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', name: 'post_show')]
-    public function show(Post $post): Response
+    public function show(Post $post, PostRepository $postRepository): Response
     {
+        $lastPosts = $postRepository->findBy(
+            ['status' => 'validated'],
+            ['publishedAt' => 'DESC'],
+            2
+        );
+
+        $favorisIds = [];
+        if ($this->getUser()) {
+            foreach ($this->getUser()->getFavorites() as $favori) {
+                $favorisIds[] = $favori->getPost()->getId();
+            }
+        }
+
         return $this->render('post/show.html.twig', [
+            'last_posts' => $lastPosts,
             'post' => $post,
+            'favorisIds' => $favorisIds,
         ]);
     }
 
@@ -142,5 +157,16 @@ class PostController extends AbstractController
         return $this->render('post/list.html.twig', [
             'posts' => $posts,
         ]);
+    }
+
+    #[Route('/post/{id}/delete', name: 'post_delete', methods: ['POST'])]
+    public function delete(Post $post, EntityManagerInterface $em, Request $request): Response
+    {
+        self::checkAccess($this->getUser(), 'OWNER_OR_ADMIN', $post);
+
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('post_list');
     }
 }

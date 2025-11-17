@@ -30,13 +30,30 @@ class RegistrationController extends AbstractController
             $user->setName($form->get('name')->getData());
             $user->setPhone($form->get('phone')->getData());
             $user->setIpAddress($request->getClientIp() ?? '127.0.0.1');
+            $user->setRoles(['ROLE_USER']);
+
+            $avatarFile = $form->get('avatar')->getData();
+
+            if ($avatarFile) {
+                $newFilename = uniqid().'.'.$avatarFile->guessExtension();
+
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('avatars_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+
+                $user->setAvatar($newFilename);
+            }
 
             $entityManager->persist($user);
             $entityManager->flush();
 
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('_preview_error');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [

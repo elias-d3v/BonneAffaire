@@ -1,38 +1,167 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<a href="{{ path('report_post', {id: post.id}) }}" class="btn btn-danger">
-    🚩 Signaler cette annonce
-</a>
-{% if app.user and app.user != post.user %}
-    <a href="{{ path('message_contact', {id: post.id}) }}" class="btn btn-primary">
-        ✉️ Envoyer un message
-    </a>
-{% endif %}
-<h1>{{ post.title }}</h1>
+<section class="page-banner">
+  <h1>Détail de l'annonce</h1>
+</section>
 
-<p>{{ post.description }}</p>
-<p><strong>Prix :</strong> {{ post.price }} €</p>
-<p><strong>Lieu :</strong> {{ post.location }}</p>
-<p><strong>Catégorie :</strong> {{ post.category.name }}</p>
-<p><strong>Publié par :</strong> {{ post.user.name }}</p>
-<p><strong>Date :</strong> {{ post.publishedAt|date('d/m/Y H:i') }}</p>
+<div class="post-show">
 
-{# Images #}
-<div>
-  {% if post.image1 %}
-    <img src="{{ asset('uploads/' ~ post.image1) }}" width="300">
-  {% endif %}
-  {% if post.image2 %}
-    <img src="{{ asset('uploads/' ~ post.image2) }}" width="300">
-  {% endif %}
-  {% if post.image3 %}
-    <img src="{{ asset('uploads/' ~ post.image3) }}" width="300">
-  {% endif %}
+  {# Slider images #}
+  <div class="post-slider-container">
+    <div class="slick-slider">
+      {% if post.image1 %}
+        <div><img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}"></div>
+      {% endif %}
+      {% if post.image2 %}
+        <div><img src="{{ asset('uploads/' ~ post.image2) }}" alt="{{ post.title }}"></div>
+      {% endif %}
+      {% if post.image3 %}
+        <div><img src="{{ asset('uploads/' ~ post.image3) }}" alt="{{ post.title }}"></div>
+      {% endif %}
+    </div>
+
+    <button class="favorite-btn"
+        data-url="{{ path('favorites_toggle', {id: post.id}) }}"
+        data-favorited="{{ post.id in favorisIds ? 'true' : 'false' }}">
+        <img src="{{ asset(post.id in favorisIds
+            ? 'images/hearth-fill.svg'
+            : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
+    </button>
+  </div>
+
+  {# Infos principales #}
+  <div class="post-header">
+    <h1>{{ post.title }}</h1>
+    <p class="category">{{ post.category.name }}</p>
+    <p class="price">{{ post.price }} €</p>
+    <p class="date">
+      Publié le {{ post.publishedAt|date('d/m/Y à H:i') }}
+    </p>
+  </div>
+
+  {# Vendeur #}
+  <div class="seller-card">
+    <div class="seller-info">
+        <img src="{{ asset(post.user.avatarPath) }}" class="avatar" alt="Profil">
+      <div>
+        <p class="seller-name">{{ post.user.name }}</p>
+        <p class="seller-rating">⭐ 4,9 / 5</p>
+      </div>
+    </div>
+    {% if app.user and app.user != post.user %}
+      <a href="#" class="btn btn-contact" data-open="contactModal">Contacter le vendeur</a>
+    {% else %}
+      <a href="{{ path('app_login') }}" class="btn btn-contact">Contacter le vendeur</a>
+    {% endif %}
+  </div>
+
+  <div class="post-meta-box">
+    {# Localisation et état #}
+    <div class="post-meta">
+      <p><strong>Lieu :</strong> <span style="font-weight:500">{{ post.location }} ({{ post.postalCode }})</span></p>
+      <p><strong>État :</strong> <span style="font-weight:500">{{ post.itemCondition }}</span></p>
+    </div>
+
+    {# Description #}
+    <div class="post-description">
+      <h3>Description :</h3>
+      <p>{{ post.description }}</p>
+    </div>
+  </div>
+
+{# Actions secondaires #}
+<div class="post-actions">
+  <div class="action-col">
+    {% if app.user and app.user != post.user %}
+      <a href="#" class="btn btn-report" data-open="reportModal">🚩 Signaler</a>
+    {% else %}
+      <a href="#" class="btn btn-report">🚩 Signaler</a>
+    {% endif %}
+  </div>
+  <div class="action-col">
+    {% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
+      <a href="{{ path('post_edit', {id: post.id}) }}" class="btn btn-edit">✏️ Modifier</a>
+    {% endif %}
+  </div>
+  <div class="action-col">
+    {% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
+      <a href="{{ path('post_delete', {id: post.id}) }}"
+        class="btn btn-report"
+        onclick="return confirm('⚠️ Es-tu sûr de vouloir supprimer cette annonce ?');">
+        🗑️ Supprimer
+      </a>
+    {% endif %}
+  </div>
 </div>
 
-{% if app.user and (app.user == post.user or 'ROLE_ADMIN' in app.user.roles) %}
-    <a href="{{ path('post_edit', {id: post.id}) }}">Modifier l’annonce</a>
+{% if app.user and app.user != post.user %}
+  {# --- Modale Signalement --- #}
+  <div class="modal" id="reportModal">
+    <div class="modal-content">
+      <h2>🚩 Signaler cette annonce</h2>
+      <p>Êtes-vous sûr de vouloir signaler cette annonce ?</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close>Annuler</button>
+        <a href="{{ path('report_post', {id: post.id}) }}" class="btn btn-danger">Confirmer</a>
+      </div>
+    </div>
+  </div>
+
+  {# --- Modale Contact --- #}
+  <div class="modal" id="contactModal">
+    <div class="modal-content">
+      <h2>✉️ Contacter {{ post.user.name }}</h2>
+      <form method="post" action="{{ path('message_contact', {id: post.id}) }}">
+        <textarea name="content" class="form-control" rows="5">
+  Bonjour {{ post.user.name }}, je suis intéressé par votre annonce. Cordialement, {{ app.user.name }}</textarea>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-close>Annuler</button>
+          <button type="submit" class="btn btn-primary">Envoyer</button>
+        </div>
+      </form>
+    </div>
+  </div>
 {% endif %}
 
+  <!-- Nouveautés -->
+  <section class="news post-details">
+    <h2 class="title">Nouveautés</h2>
+    <div class="grid">
+      {% for post in last_posts %}
+        {% if post.status == 'validated' %}
+          <article class="card">
+            <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
+              <button 
+                  class="favorite-btn"
+                  data-url="{{ path('favorites_toggle', {id: post.id}) }}"
+                  data-favorited="{{ post.id in favorisIds ? 'true' : 'false' }}"
+              >
+                  <img src="{{ asset(post.id in favorisIds 
+                      ? 'images/hearth-fill.svg' 
+                      : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
+              </button>
+
+              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}">
+              <h3>
+                {{ post.title|length > 22 
+                  ? post.title|slice(0, 22) ~ '...' 
+                  : post.title 
+                }}
+              </h3>
+              <p>{{ post.price }} €</p>
+              <span>{{ post.location }}</span>
+              <span class="date">08/09/2025 à 21h19</span>
+            </a>
+          </article>
+        {% endif %}
+      {% else %}
+        <p>Aucune annonce pour le moment</p>
+      {% endfor %}
+
+      <div class="see-more">
+        <a href="{{ path('post_list') }}" class="btn">Voir plus</a>
+      </div>
+    </div>
+  </section>
 {% endblock %}

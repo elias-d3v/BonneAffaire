@@ -3,39 +3,29 @@
 {% block title %}Accueil - BonneAffaire{% endblock %}
 
 {% block body %}
-  <!-- Bloc promo -->
+  <!-- Bloc CTA -->
   <section class="promo">
     <p>C’est le moment de vendre !</p>
-    <a href="{{ path('post_new') }}" class="btn">Publier une annonce</a>
+    <a href="{{ path('post_new') }}" class="btn">
+    <img src="/images/add-circle-svgrepo-com.svg" alt="Vendre" class="icon">
+    Publier une annonce</a>
   </section>
 
   <!-- Recherches récentes -->
-  <section class="recent-searches">
-    <h2 class="title">Recherches récentes</h2>
-    <div class="recent-grid">
-      <div class="search-card">
-        <button class="remove">&times;</button>
-        <h3>Scooter</h3>
-        <p>Toutes catégories</p>
-        <span class="location">Toute la France</span>
-      </div>
-      
-      <div class="search-card">
-        <button class="remove">&times;</button>
-        <h3>Maison</h3>
-        <p>Immobilier</p>
-        <span class="location">Paris (75)</span>
-      </div>
-    </div>
-  </section>
+<section class="recent-searches">
+  <h2 class="title">Recherches récentes</h2>
+  <div class="recent-grid" id="recentSearches"></div>
+</section>
 
   <!-- Suggestions -->
   <section class="suggestions">
     <h2 class="title">Vous pouvez aimer</h2>
 
     <div class="grid">
-      {% for post in last_posts %}
-          <article class="card">
+      {% for post in last_posts_suggest %}
+        {% if post.status == 'validated' %}
+          <article class="card {{ loop.index > 2 ? 'hide-mobile' : '' }}">
+            <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
                   class="favorite-btn"
                   data-url="{{ path('favorites_toggle', {id: post.id}) }}"
@@ -46,14 +36,21 @@
                       : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
               </button>
 
-              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}">
-              <h3>{{ post.title }}</h3>
+              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}" class="post-image">
+              <h3>
+                {{ post.title|length > 22 
+                  ? post.title|slice(0, 22) ~ '...' 
+                  : post.title 
+                }}
+              </h3>
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>
               <span class="date">08/09/2025 à 21h19</span>
+            </a>
           </article>
-        {% else %}
-            <p>Aucune annonce pour le moment</p>
+        {% endif %}
+      {% else %}
+        <p>Aucune annonce pour le moment</p>
       {% endfor %}
 
       <div class="see-more">
@@ -67,7 +64,9 @@
     <h2 class="title">Nouveautés</h2>
     <div class="grid">
       {% for post in last_posts %}
-          <article class="card">
+        {% if post.status == 'validated' %}
+          <article class="card {{ loop.index > 2 ? 'hide-mobile' : '' }}">
+            <a href="{{ path('post_show', {id: post.id}) }}" class="card-link">
               <button 
                   class="favorite-btn"
                   data-url="{{ path('favorites_toggle', {id: post.id}) }}"
@@ -78,14 +77,21 @@
                       : 'images/hearth-svgrepo-com.svg') }}" alt="favori">
               </button>
 
-              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}">
-              <h3>{{ post.title }}</h3>
+              <img src="{{ asset('uploads/' ~ post.image1) }}" alt="{{ post.title }}" class="post-image">
+              <h3>
+                {{ post.title|length > 22 
+                  ? post.title|slice(0, 22) ~ '...' 
+                  : post.title 
+                }}
+              </h3>
               <p>{{ post.price }} €</p>
               <span>{{ post.location }}</span>
               <span class="date">08/09/2025 à 21h19</span>
+            </a>
           </article>
-        {% else %}
-            <p>Aucune annonce pour le moment</p>
+        {% endif %}
+      {% else %}
+        <p>Aucune annonce pour le moment</p>
       {% endfor %}
 
       <div class="see-more">
@@ -93,4 +99,23 @@
       </div>
     </div>
   </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const searches = JSON.parse(localStorage.getItem("recent_searches")) || [];
+    
+    if (searches.length > 0) {
+      const lastCategoryId = searches[0].category;
+      if (lastCategoryId && lastCategoryId !== "") {
+        const url = new URL(window.location.href);
+
+        // ajoute lastCategory seulement si pas déjà présent
+        if (!url.searchParams.has("lastCategory")) {
+          url.searchParams.set("lastCategory", lastCategoryId);
+          window.location.href = url.toString();
+        }
+      }
+    }
+  });
+  </script>
 {% endblock %}

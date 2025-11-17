@@ -63,4 +63,35 @@ class MessageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * Récupérer toutes les conversations d’un utilisateur (dernier message avec chaque personne)
+     */
+    public function getConversations(User $user): array
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->join('m.sender', 's')
+            ->join('m.receiver', 'r')
+            ->where('m.sender = :user OR m.receiver = :user')
+            ->setParameter('user', $user)
+            ->orderBy('m.sentAt', 'DESC');
+
+        $messages = $qb->getQuery()->getResult();
+
+        $conversations = [];
+        foreach ($messages as $m) {
+            $other = $m->getSender() === $user ? $m->getReceiver() : $m->getSender();
+
+            // On garde uniquement le dernier message par utilisateur
+            if (!isset($conversations[$other->getId()])) {
+                $conversations[$other->getId()] = [
+                    'user' => $other,
+                    'lastMessage' => $m,
+                    'isRead' => $m->isRead(),
+                ];
+            }
+        }
+
+        return array_values($conversations);
+    }
 }
