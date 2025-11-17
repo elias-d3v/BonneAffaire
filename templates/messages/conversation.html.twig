@@ -18,36 +18,51 @@
 </section>
 
 <script>
-    // Descend automatiquement en bas de la conversation
+    // Fonction qui fait défiler automatiquement la boîte de conversation vers le bas
     function scrollToBottom() {
+        // Sélectionne l’élément contenant la conversation
         const box = document.querySelector('#conversation');
+        // Fait défiler jusqu'en bas du contenu
         box.scrollTop = box.scrollHeight;
     }
 
-    // Charge les messages
+    // Fonction qui charge les messages depuis le serveur
     function loadMessages() {
+        // Effectue une requête vers la route Symfony "messages_fetch"
+        // Cette route renvoie le HTML des messages pour l'utilisateur concerné
         fetch("{{ path('messages_fetch', {id: otherUser.id}) }}")
+            // Convertit la réponse en texte (ici, du HTML)
             .then(res => res.text())
+            // Insère le HTML dans le conteneur de conversation
             .then(html => {
                 document.querySelector('#conversation').innerHTML = html;
+                // Fait défiler en bas pour afficher le dernier message
                 scrollToBottom();
             });
     }
 
-    // Quand la page est prête
+    // Exécute le code une fois la page entièrement chargée
     document.addEventListener("DOMContentLoaded", () => {
-        loadMessages(); // premier chargement
-        setInterval(loadMessages, 5000); // auto-refresh toutes les 5 sec
+        // Charge les messages immédiatement au chargement de la page
+        loadMessages();
 
-        // Envoi d’un message en AJAX
+        // Recharge les messages automatiquement toutes les 5 secondes
+        setInterval(loadMessages, 5000);
+
+        // Gère l’envoi du formulaire de message sans recharger la page
         document.querySelector("#message-form").addEventListener("submit", e => {
+            // Empêche le comportement par défaut du formulaire (rechargement de la page)
             e.preventDefault();
+
             const form = e.target;
 
+            // Envoie le formulaire en AJAX avec la méthode POST
             fetch(form.action, { method: "POST", body: new FormData(form) })
+                // Une fois le message envoyé, vide le champ de texte
                 .then(() => {
                     form.reset();
-                    loadMessages(); // recharge les messages
+                    // Recharge les messages pour inclure le nouveau
+                    loadMessages();
                 });
         });
     });
